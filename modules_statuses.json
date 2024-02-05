@@ -1,0 +1,9 @@
+{
+    "Settings": true,
+    "Users": true,
+    "Roles": true,
+    "Cities": true,
+    "Areas": true,
+    "AddressesAndTowns": true,
+    "Donors": true
+}

@@ -1,0 +1,13 @@
+{
+    "name": "AddressesAndTowns",
+    "alias": "addressesandtowns",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\AddressesAndTowns\\Providers\\AddressesAndTownsServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
