@@ -78,10 +78,12 @@ Blood Donors
               <table class="table table-striped table-hover table-sm" id="donors" style="width:100%;">
                 <thead>
                   <tr>
+                    <th>Image</th>
                     <th>Country Name</th>
                     <th>State Name</th>
                     <th>City Name</th>
                     <th>Area</th>
+                    <th>Town</th>
                     <th>Address</th>
                     <th>Name</th>
                     <th>Age</th>
@@ -118,17 +120,19 @@ $(document).ready( function(){
       buttons:[],
       buttons:[],
               columns: [
-                {data: 'country_id', name: 'country_id'},
-                {data: 'state_id', name: 'state_id'},
-                {data: 'city_id', name: 'city_id'},
-                {data: 'area_id', name: 'area_id'},
-                {data: 'address_id', name: 'address_id'},
-                {data: 'name', name: 'name'},
-                {data: 'age', name: 'age'},
-                {data: 'blood_group', name: 'blood_group'},
-                {data: 'contact_no', name: 'contact_no'},
-                {data: 'last_donate_date', name: 'last_donate_date'},
-                {data: 'action', name: 'action', orderable: false, searchable: false},
+                {data: 'image', name: 'image', orderable: false, searchable: false,class:'text-center'},
+                {data: 'country_id', name: 'country_id',class:'text-center'},
+                {data: 'state_id', name: 'state_id',class:'text-center'},
+                {data: 'city_id', name: 'city_id',class:'text-center'},
+                {data: 'area_id', name: 'area_id',class:'text-center'},
+                {data: 'town', name: 'town'},
+                {data: 'address', name: 'address',class:'text-center'},
+                {data: 'name', name: 'name',class:'text-center'},
+                {data: 'age', name: 'age',class:'text-center'},
+                {data: 'blood_group', name: 'blood_group',class:'text-center'},
+                {data: 'contact_no', name: 'contact_no',class:'text-center'},
+                {data: 'last_donate_date', name: 'last_donate_date',class:'text-center'},
+                {data: 'action', name: 'action', orderable: false, searchable: false,class:'text-center'},
             ]
   });
 }

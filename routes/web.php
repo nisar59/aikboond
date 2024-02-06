@@ -25,4 +25,5 @@ Route::group(['middleware'=>'auth'], function(){
     Route::post('cities','HomeController@fetchCity');
     Route::post('areas','HomeController@fetchAreas');
     Route::post('address','HomeController@fetchAdress');
+    Route::get('send-otp','HomeController@sendOTP');
 });

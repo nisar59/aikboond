@@ -11,6 +11,7 @@ use Modules\Cities\Entities\Cities;
 use Modules\Areas\Entities\Areas;
 use Modules\AddressesAndTowns\Entities\AddressesAndTowns;
 use Modules\Donors\Entities\Donor;
+use App\Models\OTP;
 use Yajra\DataTables\Facades\DataTables;
 use Auth;
 use DB;
@@ -65,13 +66,14 @@ class DonorsController extends Controller
            ->addColumn('action',function ($row){
                $action='';
                if(Auth::user()->can('donors.edit')){
-               $action.='<a class="btn btn-primary btn-sm m-1" href="'.url('admin/donors/edit/'.$row->id).'"><i class="fas fa-pencil-alt"></i></a>';
+               $action.='<a class="btn btn-primary btn-sm m-1" href="'.url('/donors/edit/'.$row->id).'"><i class="fas fa-pencil-alt"></i></a>';
             }
             if(Auth::user()->can('donors.delete')){
-               $action.='<a class="btn btn-danger btn-sm m-1" href="'.url('admin/donors/destroy/'.$row->id).'"><i class="fas fa-trash-alt"></i></a>';
+               $action.='<a class="btn btn-danger btn-sm m-1" href="'.url('/donors/destroy/'.$row->id).'"><i class="fas fa-trash-alt"></i></a>';
            }
                return $action;
-           })->editColumn('country_id',function ($row)
+           })
+           ->editColumn('country_id',function ($row)
            {
                return Country($row->country_id);
            })
@@ -87,15 +89,25 @@ class DonorsController extends Controller
            {
                return Area($row->area_id);
            })
-          ->editColumn('address_id',function ($row)
+          ->editColumn('town',function ($row)
            {
-               return Address($row->address_id);
+               return Address($row->town);
            })
            ->editColumn('last_donate_date',function($row)
              {
                  return Carbon::parse($row->last_donate_date)->format('d-m-Y');
              })
-           ->rawColumns(['action'])
+            ->addColumn('image', function ($row) {                    
+                    $path=public_path('images');
+                    $url=url('images');
+                    $img=$url.'/images.png';
+                    if(file_exists($path.'/donors/'.$row->image) AND $row->image!=null){
+                    $img=$url.'/donors/'.$row->image;
+                    }
+
+                    return '<img src="'.$img.'" height="50" width="50">';
+                })
+           ->rawColumns(['action','image'])
            ->make(true);
         }
          $states=States::where('country_id',167)->get();
@@ -121,22 +133,34 @@ class DonorsController extends Controller
      */
     public function store(Request $req)
     {
+
         $req->validate([
             'name'=>'required',
             'age'=>'required',
             'state_id'=>'required',
             'city_id'=>'required',
             'area_id'=>'required',
-            'address_id'=>'required',
+            'address'=>'required',
+            'town'=>'required',
             'blood_group'=>'required',
             'contact_no'=>'required',
-/*            'last_donate_date'=>'required',
-*/        ]);
+        ]);
             DB::beginTransaction();
          try{
-            Donor::create($req->except('_token'));
+                $inputs=$req->except('_token');
+                 $path=public_path('images/donors/');
+                 $inputs=$req->except('_token');
+                 if($req->image!=null){
+                 $inputs['image']=FileUpload($req->image, $path);
+                }
+                $count=OTP::where(['otp'=>$req->otp, 'phone_number'=>$req->contact_no])->orderBy('id', 'DESC')->first();
+                if ($count==null) {
+                       $message="Your given otp is not matched";
+                       return redirect()->back()->withInput()->with('success',$message);
+                }
+            Donor::create($inputs);
             DB::commit();
-            return redirect('admin/donors')->with('success','Donor sccessfully created');
+            return redirect('/donors')->with('success','Donor sccessfully created');
          }catch(Exception $ex){
             DB::rollback();
          return redirect()->back()->with('error','Something went wrong with this error: '.$ex->getMessage());
@@ -184,16 +208,27 @@ class DonorsController extends Controller
             'state_id'=>'required',
             'city_id'=>'required',
             'area_id'=>'required',
-            'address_id'=>'required',
+            'town'=>'required',
+            'address'=>'required',
             'blood_group'=>'required',
             'contact_no'=>'required',
-/*            'last_donate_date'=>'required',
-*/        ]);
+            'last_donate_date'=>'required',
+        ]);
             DB::beginTransaction();
          try{
-            Donor::find($id)->update($req->except('_token'));
+             $inputs=$req->except('_token');
+             $path=public_path('images/donors/');
+                 if($req->image!=null){
+                 $inputs['image']=FileUpload($req->image, $path);
+                }
+                $count=OTP::where(['otp'=>$req->otp, 'phone_number'=>$req->contact_no])->orderBy('id', 'DESC')->first();
+                if ($count==null) {
+                       $message="Your given otp is not matched";
+                       return redirect()->back()->withInput()->with('success',$message);
+                }
+            Donor::find($id)->update($inputs);
             DB::commit();
-            return redirect('admin/donors')->with('success','Donor sccessfully Updated');
+            return redirect('/donors')->with('success','Donor sccessfully Updated');
          }catch(Exception $ex){
             DB::rollback();
          return redirect()->back()->with('error','Something went wrong with this error: '.$ex->getMessage());
@@ -215,7 +250,7 @@ class DonorsController extends Controller
         try{
         Donor::find($id)->delete();
         DB::commit();
-         return redirect('admin/donors')->with('success','Blood Donor successfully deleted');
+         return redirect('/donors')->with('success','Blood Donor successfully deleted');
          
          } catch(Exception $e){
             DB::rollback();

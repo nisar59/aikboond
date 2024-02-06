@@ -135,9 +135,12 @@
               <div class="dropdown-title">Hello {{Auth::user()->name}}</div>
               <a href="{{url('users/edit/'.Auth::user()->id)}}" class="dropdown-item has-icon"> <i class="far fa-user"></i> Profile
               <div class="dropdown-divider"></div>
-              <a href="{{url('admin/logout')}}" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
+              <a href="{{url('/logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
                 Logout
               </a>
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    {{ csrf_field() }}
+</form>
             </div>
           </li>
         </ul>

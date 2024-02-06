@@ -105,7 +105,7 @@ class AreasController extends Controller
          try{
             Areas::create($req->except('_token'));
             DB::commit();
-            return redirect('admin/areas')->with('success','Areas sccessfully created');
+            return redirect('areas')->with('success','Areas sccessfully created');
          }catch(Exception $ex){
             DB::rollback();
          return redirect()->back()->with('error','Something went wrong with this error: '.$ex->getMessage());

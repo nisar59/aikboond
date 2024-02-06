@@ -6,7 +6,7 @@ Blood Donor
 <section class="section">
   <div class="section-body">
     
-    <form action="{{url('/donors/store')}}" method="post">
+    <form action="{{url('/donors/store')}}" method="post" enctype="multipart/form-data">
       @csrf
       <div class="row">
         <div class="col-12 col-md-12">
@@ -18,28 +18,33 @@ Blood Donor
               <div class="row">
                 <div class="form-group col-md-6">
                   <label>Name</label>
-                  <input type="text" class="form-control" name="name" placeholder="Enter Name">
+                  <input type="text" class="form-control" value="{{old('name')}}" name="name" placeholder="Enter Name">
                 </div>
                 <div class="form-group col-md-6">
                   <label>Age</label>
-                  <input type="number" class="form-control" min="0" name="age" placeholder="Enter Age">
+                  <input type="number" class="form-control" min="0" name="age" value="{{old('age')}}" placeholder="Enter Age">
                 </div>
-
+                <div class="form-group col-md-6">
+                  <label>Image</label>
+                  <input type="file" class="form-control" name="image" id="image" onchange="document.getElementById('image-display').src = window.URL.createObjectURL(this.files[0])">
+                </div>
+                <div class="form-group col-md-6">
+                  <img src="{{url('public/img/images.png')}}" class="image-display" id="image-display" width="100" height="100">
+                </div>
+                
                 <div class="form-group col-md-6">
                   <label>Contact No</label>
-                  <input type="number" class="form-control" min="0" name="contact_no"  placeholder="Enter Contact No">
+                  <input type="number" class="form-control contact_no" min="0" name="contact_no"  placeholder="Enter Contact No">
                 </div>
-
+                
                 <div class="form-group col-md-2">
                   <label for="">Get Code</label><br>
-                  <button type="button" class="btn btn-primary">Get Code</button>                  
+                  <button type="button" class="btn btn-primary send-code">Get Code</button>
                 </div>
-
                 <div class="form-group col-md-4">
-                  <label>Verification Code</label>
-                  <input type="number" class="form-control" min="0" name="contact_no"  placeholder="Enter Verification Code">
+                  <label>OTP</label>
+                  <input type="number" class="form-control" min="0" name="otp"  placeholder="Enter Verification Code">
                 </div>
-
                 <input type="text" hidden name="country_id" value="167">
                 <div class="form-group col-md-6">
                   <label for="">States</label>
@@ -60,34 +65,32 @@ Blood Donor
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label for="">Area Name</label>
+                    <label for="area_id">Area Name</label>
                     <select id="area-dropdown" class="form-control select2" name="area_id">
                       <option value="">-- Select Area --</option>
                     </select>
                   </div>
                 </div>
                 <div class="form-group col-md-6">
-                  <label>Address</label>
-                  <select id="address-dropdown" class="form-control select2" name="address_id">
+                  <label for="town">Towns and Villages</label>
+                  <select id="address-dropdown" class="form-control select2" name="town">
                     <option value="">-- Select Address --</option>
                   </select>
                 </div>
-                <div class="form-group col-md-6">
-                  <label>Blood Group</label>
-                  <select name="blood_group" class="form-control">
-                    <option value="">-- Select Blood Group --</option>
-                    <option value="A+">A+</option>
-                    <option value="A-">A-</option>
-                    <option value="B+">B+</option>
-                    <option value="B-">B-</option>
-                    <option value="O+">O+</option>
-                    <option value="O-">O-</option>
-                    <option value="AB+">AB+</option>
-                    <option value="AB-">AB-</option>
+                <div class="form-group col-md-4">
+                  <label class="address">Address</label>
+                  <input type="text" class="form-control" name="address" placeholder="Enter Address">
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="blood_group">Blood Group</label>
+                  <select name="blood_group" class="form-control select2">
+                    <option>-- Select Blood Group --</option>
+                    @foreach(BloodGroup() as $blood)
+                    <option value="{{$blood}}">{{$blood}}</option>
+                    @endforeach
                   </select>
                 </div>
-
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                   <label>Last Donate Date</label>
                   <input type="date" class="form-control" name="last_donate_date" placeholder="Enter Last Donate Date">
                 </div>
@@ -202,6 +205,25 @@ Blood Donor
   }
   });
   });
+  ///////// GET Message Code
+  $(".send-code").click(function(){
+  var contact_no=$('input[name="contact_no"]').val();
+  $.ajax({
+  url : '{{url("send-otp")}}',
+  type : 'GET',
+  data:{_token: "{{ csrf_token() }}",contact_no:contact_no},
+  success : function(res) {
+  if (res == "success") {
+  alert('request sent!');
+  }
+  },
+  error: function() {
+  alert('Error');
+  },
+  
+  });
+  });
+  ///
   });
   </script>
   @endsection

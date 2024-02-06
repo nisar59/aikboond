@@ -11,16 +11,11 @@ function AllPermissions()
 	$role=[];
 	$role['users']=['view','add','edit','delete'];
 	$role['permissions']=['view','add','edit','delete'];
-	$role['country']=['view','add','edit','delete'];
-	$role['states']=['view','add','edit','delete'];
-	$role['cities']=['view','add','edit','delete'];
-	$role['areas']=['view','add','edit','delete'];
+ 	$role['states']=['view','add','edit','delete'];
+ 	$role['areas']=['view','add','edit','delete'];
 	$role['addresses-and-towns']=['view','add','edit','delete'];
 	$role['donors']=['view','add','edit','delete'];
-	$role['stories']=['view','add','edit','delete'];
-	$role['payment-methods']=['view','add','edit','delete'];
-	$role['tokes']=['view','add','edit','delete'];
-	$role['settings']=['view','add','edit','delete'];
+    	$role['settings']=['view','add','edit','delete'];
 
 
 
@@ -38,6 +33,7 @@ function FileUpload($file, $path){
 	  	return null;
 	  }
 }
+
 
 
 function Settings()
@@ -150,7 +146,28 @@ function sendMsg($phn, $msg)
 
 }
 
+	
 
+	 function Random()
+	{
+		 $random = mt_rand(100000, 999999);
+		 return $random;
+	}
+
+	/*Blood Group*/
+	function BloodGroup()
+	{	$bloodgrup =[
+		'A+'=>'A+',
+		'A-'=>'A-',
+		'B+'=>'B+',
+		'B-'=>'B-',
+		'O+'=>'O+',
+		'O-'=>'O-',
+		'AB+'=>'AB+',
+		'AB-'=>'AB-',
+	];
+	return $bloodgrup;
+	}
 
 // function sendMsg($phn, $msg)
 // {

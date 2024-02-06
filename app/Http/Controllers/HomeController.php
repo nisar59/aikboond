@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Countries;
 use App\Models\States;
+use App\Models\OTP;
 use Modules\Cities\Entities\Cities;
 use Modules\Areas\Entities\Areas;
 use Modules\AddressesAndTowns\Entities\AddressesAndTowns;
@@ -117,8 +118,14 @@ class HomeController extends Controller
     public function sendOTP(Request $req)
     {
         try{
-            dd($req->all());
-
+            $otp=Random();
+            $msg='your aikboond OTP is: '.$otp.', valid for 15 minutes. Please do not share it with anyone. For detail visit aikboond.com.';
+             OTP::create([
+            'phone_number' => $req->contact_no,
+             'otp' => $otp
+         ]);
+           return sendMsg($req->contact_no,$msg);
+          
         }
          catch(Exception $ex){
             $res=['success'=>false, 'error'=>'Something went wrong with this error: '.$ex->getMessage(), 'data'=>null];

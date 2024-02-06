@@ -6,7 +6,7 @@ Blood Donor
 <section class="section">
   <div class="section-body">
     
-    <form action="{{url('/donors/update/'.$donor->id)}}" method="post">
+    <form action="{{url('/donors/update/'.$donor->id)}}" method="post" enctype="multipart/form-data">
       @csrf
       <div class="row">
         <div class="col-12 col-md-12">
@@ -23,6 +23,26 @@ Blood Donor
                 <div class="form-group col-md-6">
                   <label>Age</label>
                   <input type="text" class="form-control" name="age" value="{{$donor->age}}" placeholder="Enter Age">
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Image</label>
+                    <input type="file" class="form-control" name="image" id="image" onchange="document.getElementById('image-display').src = window.URL.createObjectURL(this.files[0])">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <img src="{{url('images/donors/'.$donor->image)}}" class="image-display" id="image-display" width="100" height="100">
+                  </div>
+                <div class="form-group col-md-6">
+                  <label>Contact No</label>
+                  <input type="number" class="form-control" min="0" value="{{$donor->contact_no}}" name="contact_no"  placeholder="Enter Contact No">
+                </div>
+                
+                <div class="form-group col-md-2">
+                  <label for="">Get Code</label><br>
+                  <button type="button" class="btn btn-primary send-code">Get Code</button>
+                </div>
+                <div class="form-group col-md-4">
+                  <label>OTP</label>
+                  <input type="number" class="form-control" min="0" name="otp"  placeholder="Enter Verification Code">
                 </div>
                 <input type="text" hidden name="country_id" value="167">
                 <div class="form-group col-md-6">
@@ -51,28 +71,24 @@ Blood Donor
                   </div>
                 </div>
                 <div class="form-group col-md-6">
-                  <label>Address</label>
-                  <select id="address-dropdown" class="form-control" name="address_id">
-                      <option value="">-- Select Address --</option>
+                  <label>Towns and Villages</label>
+                  <select id="address-dropdown" class="form-control" name="town">
+                      <option value="">-- Towns and Villages --</option>
                     </select>
                 </div>
                 <div class="form-group col-md-4">
-                  <label>Blood Group</label>
-                  <select class="form-control" name="blood_group">
-                    <option value="A+" @if($donor->blood_group=="A+") selected @endif>A+</option>
-                    <option value="A-" @if($donor->blood_group=="A-") selected @endif>A-</option>
-                    <option value="B+" @if($donor->blood_group=="B+") selected @endif>B+</option>
-                    <option value="B-" @if($donor->blood_group=="B-") selected @endif>B-</option>
-                    <option value="O+" @if($donor->blood_group=="O+") selected @endif>O+</option>
-                    <option value="O-" @if($donor->blood_group=="O-") selected @endif>O-</option>
-                    <option value="AB+" @if($donor->blood_group=="AB+") selected @endif>AB+</option>
-                    <option value="AB-" @if($donor->blood_group=="AB-") selected @endif>AB-</option>
-                    
-                  </select>
+                  <label class="address">Address</label>
+                  <input type="text" class="form-control" name="address" value="{{$donor->address}}" placeholder="Enter Address">
                 </div>
                 <div class="form-group col-md-4">
-                  <label>Contact No</label>
-                  <input type="number" class="form-control" min="0" value="{{$donor->contact_no}}" name="contact_no"  placeholder="Enter Contact No">
+                  <label>Blood Group</label>
+                    <select name="blood_group" class="form-control select2">
+                    <option>-- Select Blood Group --</option>
+                    @foreach(BloodGroup() as $blood)
+                    <option value="{{$blood}}" @if($blood==$donor->blood_group) selected @endif>{{$blood}}</option>
+                    @endforeach
+                    <!-- <option value="AB-" @if($donor->blood_group=="AB-") selected @endif>AB-</option> -->
+                  </select>
                 </div>
                 <div class="form-group col-md-4">
                   <label>Last Donate Date</label>
@@ -200,7 +216,7 @@ setTimeout(function() {
             $('#address-dropdown').html('<option value="">Select Address</option>');
             $.each(result.address,function(key,value){
               var sel='';
-              if(value.id=='{{$donor->address_id}}'){
+              if(value.id=='{{$donor->town}}'){
                 sel='selected';
               }
             $("#address-dropdown").append('<option '+sel+' value="'+value.id+'">'+value.name+'</option>');
