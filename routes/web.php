@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Auth::routes();
+Route::any('/logout', 'Auth\LoginController@logout');
+
 Route::group(['middleware'=>'auth'], function(){
     Route::get('/', 'HomeController@index');
     Route::get('/home', 'HomeController@index')->name('home');

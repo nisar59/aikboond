@@ -135,7 +135,7 @@
               <div class="dropdown-title">Hello {{Auth::user()->name}}</div>
               <a href="{{url('users/edit/'.Auth::user()->id)}}" class="dropdown-item has-icon"> <i class="far fa-user"></i> Profile
               <div class="dropdown-divider"></div>
-              <a href="{{url('admin/logout')}}" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
+              <a href="{{url('/logout')}}" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
                 Logout
               </a>
             </div>

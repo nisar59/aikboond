@@ -20,26 +20,45 @@ Blood Donor
                   <label>Name</label>
                   <input type="text" class="form-control" name="name" placeholder="Enter Name">
                 </div>
-                <div class="form-group col-md-6">
-                  <label>Age</label>
-                  <input type="number" class="form-control" min="0" name="age" placeholder="Enter Age">
-                </div>
 
                 <div class="form-group col-md-6">
-                  <label>Contact No</label>
-                  <input type="number" class="form-control" min="0" name="contact_no"  placeholder="Enter Contact No">
+                  <label>DOB</label>
+                  <input type="date" class="form-control" placeholder="Enter Age">
                 </div>
 
-                <div class="form-group col-md-2">
-                  <label for="">Get Code</label><br>
-                  <button type="button" class="btn btn-primary">Get Code</button>                  
+                <div class="form-group col-md-6">
+                  <label>Phone No</label>
+                  <input type="number" class="form-control" name="phone"  placeholder="Enter Phone No">
                 </div>
 
-                <div class="form-group col-md-4">
-                  <label>Verification Code</label>
-                  <input type="number" class="form-control" min="0" name="contact_no"  placeholder="Enter Verification Code">
+                <div class="col-md-6">
+                    <label>Verification Code</label>
+                    <div class="input-group mb-2 mr-sm-2">
+                      <input type="text" class="form-control" id="inlineFormInputGroupUsername2" placeholder="Verification Code">
+                      <div class="input-group-append">
+                        <div class="btn btn-primary input-group-text">Get Code</div>
+                      </div>
+                    </div> 
                 </div>
 
+                <div class="form-group col-md-6">
+                  <label>Blood Group</label>
+                  <select name="blood_group" class="form-control">
+                    <option value="">-- Select Blood Group --</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Last Donate Date</label>
+                  <input type="date" class="form-control" name="last_donate_date" placeholder="Enter Last Donate Date">
+                </div>
                 <input type="text" hidden name="country_id" value="167">
                 <div class="form-group col-md-6">
                   <label for="">States</label>
@@ -67,30 +86,18 @@ Blood Donor
                   </div>
                 </div>
                 <div class="form-group col-md-6">
-                  <label>Address</label>
-                  <select id="address-dropdown" class="form-control select2" name="address_id">
+                  <label>Towns & Addresses</label>
+                  <select id="address-dropdown" class="form-control select2" name="town_id">
                     <option value="">-- Select Address --</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-6">
-                  <label>Blood Group</label>
-                  <select name="blood_group" class="form-control">
-                    <option value="">-- Select Blood Group --</option>
-                    <option value="A+">A+</option>
-                    <option value="A-">A-</option>
-                    <option value="B+">B+</option>
-                    <option value="B-">B-</option>
-                    <option value="O+">O+</option>
-                    <option value="O-">O-</option>
-                    <option value="AB+">AB+</option>
-                    <option value="AB-">AB-</option>
                   </select>
                 </div>
 
                 <div class="form-group col-md-6">
-                  <label>Last Donate Date</label>
-                  <input type="date" class="form-control" name="last_donate_date" placeholder="Enter Last Donate Date">
+                  <label>Address</label>
+                  <input type="text" class="form-control" name="address"  placeholder="Enter Address">
                 </div>
+
+
               </div>
               <div class="card-footer text-right">
                 <button class="btn btn-primary mr-1" type="submit">Submit</button>

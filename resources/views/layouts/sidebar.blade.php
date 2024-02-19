@@ -30,19 +30,6 @@ $pref=Request()->route()->getPrefix();
             <li class="dropdown @if($pref=='/roles') active @endif"><a class="nav-link" href="{{url('/roles')}}"><i class="fas fa-hands-helping"></i><span>Roles & Permissions</span></a></li>
             @endcan
 
-            <li class="menu-header">Countries</li>
-            @can('country.view')
-            <li class="dropdown @if($pref=='/country') active @endif">
-              <a href="{{url('/country')}}" class="nav-link"><i class="fa fa-flag" aria-hidden="true"></i><span>Countries</span></a>
-            </li>
-            @endcan
-
-            <li class="menu-header">States</li>
-            @can('states.view')
-            <li class="dropdown @if($pref=='/states') active @endif">
-              <a href="{{url('/states')}}" class="nav-link"><i class="fas fa-city"></i><span>States</span></a>
-            </li>
-            @endcan
 
             <li class="menu-header">Cities</li>
             @can('cities.view')
@@ -70,27 +57,6 @@ $pref=Request()->route()->getPrefix();
             @can('donors.view')
             <li class="dropdown @if($pref=='/donors') active @endif">
               <a href="{{url('/donors')}}" class="nav-link"><i class="fas fa-indent"></i><span>Blood Donors</span></a>
-            </li>
-            @endcan
-            
-            <li class="menu-header">Stories</li>
-            @can('stories.view')
-            <li class="dropdown @if($pref=='/stories') active @endif">
-              <a href="{{url('/stories')}}" class="nav-link"><i class="fa fa-history" aria-hidden="true"></i><span>Stories</span></a>
-            </li>
-            @endcan
-
-             <li class="menu-header">Payment Methods</li>
-            @can('payment-methods.view')
-            <li class="dropdown @if($pref=='/payment-methods') active @endif">
-              <a href="{{url('/payment-methods')}}" class="nav-link"><i class="fa fa-credit-card" aria-hidden="true"></i><span>Payment Methods</span></a>
-            </li>
-            @endcan
-
-             <li class="menu-header">Token</li>
-            @can('payment-methods.view')
-            <li class="dropdown @if($pref=='/tokens') active @endif">
-              <a href="{{url('/tokens')}}" class="nav-link"><i class="fa fa-key" aria-hidden="true"></i><span>Token</span></a>
             </li>
             @endcan
 
