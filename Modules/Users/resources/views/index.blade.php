@@ -21,7 +21,12 @@ Users
                           <tr>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Phone</th>
                             <th>Role</th>
+                            <th>State</th>
+                            <th>City</th>                            
+                            <th>Area</th>
+                            <th>Town & Address</th>
                             <th>Action</th>
                           </tr>
                         </thead>
@@ -48,7 +53,12 @@ Users
               columns: [
                 {data: 'name', name: 'name'},
                 {data: 'email', name: 'email'},
+                {data: 'phone', name: 'phone'},
                 {data: 'role', name: 'role'},
+                {data: 'state_id', name: 'state_id'},
+                {data: 'city_id', name: 'city_id'},
+                {data: 'area_id', name: 'area_id'},
+                {data: 'town_id', name: 'town_id'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
           });

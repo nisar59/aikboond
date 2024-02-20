@@ -9,6 +9,7 @@ use App\Models\Countries;
 use App\Models\States;
 use Modules\Cities\Entities\Cities;
 use Modules\Areas\Entities\Areas;
+use App\Models\VerificationMsgs;
 use Modules\AddressesAndTowns\Entities\AddressesAndTowns;
 use Modules\Donors\Entities\Donor;
 use Yajra\DataTables\Facades\DataTables;
@@ -24,13 +25,31 @@ class DonorsController extends Controller
     public function index()
     {
        $req=request();
-
+       $user=Auth::user();
          if ($req->ajax()) {
 
             $strt=$req->start;
             $length=$req->length;
 
             $donors=Donor::query();
+
+            if(!$user->hasRole('super-admin') && $user->can('view-all')){
+                
+           }
+           elseif(!$user->hasRole('super-admin') && $user->can('view-by-state')){
+                $donors->where('state_id', $user->state_id);
+           }
+           elseif(!$user->hasRole('super-admin') && $user->can('view-by-city')){
+                $donors->where('city_id', $user->city_id);
+           }
+            elseif(!$user->hasRole('super-admin') && $user->can('view-by-area')){
+                $donors->where('area_id', $user->area_id);
+           }            
+           else{
+                $donors->where('town_id', $user->town_id);
+           }
+
+
              if ($req->name != null) {
             $donors->where('name', $req->name);
             }
@@ -46,8 +65,8 @@ class DonorsController extends Controller
             if ($req->address != null) {
             $donors->where('address', $req->address);
             } 
-            if ($req->contact_number != null) {
-            $donors->where('contact_no','LIKE','%'.$req->contact_number.'%');
+            if ($req->phone != null) {
+            $donors->where('phone','LIKE','%'.$req->phone.'%');
             }
             if ($req->last_donate_date != null) {
             $donors->where('last_donate_date',$req->last_donate_date);
@@ -71,26 +90,35 @@ class DonorsController extends Controller
                $action.='<a class="btn btn-danger btn-sm m-1" href="'.url('admin/donors/destroy/'.$row->id).'"><i class="fas fa-trash-alt"></i></a>';
            }
                return $action;
-           })->editColumn('country_id',function ($row)
-           {
-               return Country($row->country_id);
            })
-          ->editColumn('state_id',function ($row)
-           {
-               return State($row->state_id);
-           })
-          ->editColumn('city_id',function ($row)
-           {
-               return City($row->city_id);
-           })
-          ->editColumn('area_id',function ($row)
-           {
-               return Area($row->area_id);
-           })
-          ->editColumn('address_id',function ($row)
-           {
-               return Address($row->address_id);
-           })
+
+            ->editColumn('dob', function ($row) {
+                return Carbon::parse($row->dob)->age . ' Years';
+            })
+
+            ->editColumn('state_id', function ($row) {
+                if($row->state()->exists()){
+                    return $row->state->name;
+                }
+            })
+
+            ->editColumn('city_id', function ($row) {
+                if($row->city()->exists()){
+                    return $row->city->name;
+                }
+            })
+
+            ->editColumn('area_id', function ($row) {
+                if($row->area()->exists()){
+                    return $row->area->name;
+                }
+            })
+
+            ->editColumn('town_id', function ($row) {
+                if($row->town()->exists()){
+                    return $row->town->name;
+                }
+            })
            ->editColumn('last_donate_date',function($row)
              {
                  return Carbon::parse($row->last_donate_date)->format('d-m-Y');
@@ -114,6 +142,8 @@ class DonorsController extends Controller
         return view('donors::create',compact('states'));
     }
 
+
+
     /**
      * Store a newly created resource in storage.
      * @param Request $request
@@ -123,20 +153,55 @@ class DonorsController extends Controller
     {
         $req->validate([
             'name'=>'required',
-            'age'=>'required',
+            'phone'=>'required|min:11|max:11|unique:donors',
+            'verification_code'=>'required | min:6 | max:6',
+            'dob'=>'required',
+            'blood_group'=>'required',
+            'image'=>'required',
+            'country_id'=>'required',
             'state_id'=>'required',
             'city_id'=>'required',
             'area_id'=>'required',
-            'address_id'=>'required',
-            'blood_group'=>'required',
-            'contact_no'=>'required',
-/*            'last_donate_date'=>'required',
-*/        ]);
+            'town_id'=>'required',
+            'address'=>'required',
+        ]);
             DB::beginTransaction();
          try{
-            Donor::create($req->except('_token'));
+
+
+            $phone=$req->phone;
+            $phone=preg_replace('/[^0-9]/', "", $phone);
+
+            $start_with_0=str_starts_with($phone, '03');
+
+            if($start_with_0){
+                $phone = substr_replace($phone,'92',0,1);
+            }
+
+
+            $check_verification=VerificationMsgs::where(['phone'=>$phone, 'code'=>$req->verification_code])->first();
+
+            if($check_verification==null){
+                return redirect()->back()->withInput()->with('error', 'Wrong verification code');
+            }
+            $min_age=Settings()->mini_age;
+            $max_age=Settings()->max_age;
+
+            $age= Carbon::parse($req->dob)->age;
+
+            if($age < $min_age || $age > $max_age){
+                return redirect()->back()->withInput()->with('error', 'Donor should not younger than :'.$min_age.' years and elder than:'.$max_age.' years');
+            }
+
+            $inputs=$req->except('_token','verification_code', 'image', 'phone');
+            $path=public_path('img/donors');
+            $inputs['image']=FileUpload($req->image, $path);
+            $inputs['user_id']=Auth::user()->id;
+            $inputs['phone']=$phone;
+
+            Donor::create($inputs);
             DB::commit();
-            return redirect('admin/donors')->with('success','Donor sccessfully created');
+            return redirect('donors')->with('success','Donor sccessfully saved');
          }catch(Exception $ex){
             DB::rollback();
          return redirect()->back()->with('error','Something went wrong with this error: '.$ex->getMessage());
@@ -164,7 +229,6 @@ class DonorsController extends Controller
      */
     public function edit($id)
     {
-       
         $donor=Donor::find($id);
         $states=States::where('country_id',167)->get();
         return view('donors::edit',compact('donor','states'));
@@ -178,22 +242,70 @@ class DonorsController extends Controller
      */
     public function update(Request $req, $id)
     {
-         $req->validate([
+        $req->validate([
             'name'=>'required',
-            'age'=>'required',
+            'phone'=>'required|min:11|max:12|unique:donors,phone,'.$id,
+            'dob'=>'required',
+            'blood_group'=>'required',
+            'country_id'=>'required',
             'state_id'=>'required',
             'city_id'=>'required',
             'area_id'=>'required',
-            'address_id'=>'required',
-            'blood_group'=>'required',
-            'contact_no'=>'required',
-/*            'last_donate_date'=>'required',
-*/        ]);
+            'town_id'=>'required',
+            'address'=>'required',
+        ]);
             DB::beginTransaction();
          try{
-            Donor::find($id)->update($req->except('_token'));
+
+
+            $phone=$req->phone;
+            $phone=preg_replace('/[^0-9]/', "", $phone);
+
+            $start_with_0=str_starts_with($phone, '03');
+
+            if($start_with_0){
+                $phone = substr_replace($phone,'92',0,1);
+            }
+
+
+            $donor=Donor::find($id);
+
+            if($donor==null){
+                return redirect()->back()->withInput()->with('error', 'Something went wrong, donor not found');
+            }
+
+            if($phone!=$donor->phone){
+                if($req->verification_code==null){
+                    return redirect()->back()->withInput()->with('error', 'you have changed donor phone no, please verify by providing verification code');
+                }
+                $check_verification=VerificationMsgs::where(['phone'=>$phone, 'code'=>$req->verification_code])->first();
+                if($check_verification==null){
+                    return redirect()->back()->withInput()->with('error', 'Wrong verification code');
+                }
+            }
+
+            $min_age=Settings()->mini_age;
+            $max_age=Settings()->max_age;
+
+            $age= Carbon::parse($req->dob)->age;
+
+            if($age < $min_age || $age > $max_age){
+                return redirect()->back()->withInput()->with('error', 'Donor is '.$age.' years old, donor should not younger than :'.$min_age.' years and elder than:'.$max_age.' years');
+            }
+
+            $inputs=$req->except('_token','verification_code', 'image', 'phone');
+            $path=public_path('img/donors');
+
+            if($req->image!=null){
+                $inputs['image']=FileUpload($req->image, $path);
+            }
+
+            $inputs['phone']=$phone;
+
+            $donor->update($inputs);
+
             DB::commit();
-            return redirect('admin/donors')->with('success','Donor sccessfully Updated');
+            return redirect('donors')->with('success','Donor sccessfully saved');
          }catch(Exception $ex){
             DB::rollback();
          return redirect()->back()->with('error','Something went wrong with this error: '.$ex->getMessage());
@@ -215,7 +327,7 @@ class DonorsController extends Controller
         try{
         Donor::find($id)->delete();
         DB::commit();
-         return redirect('admin/donors')->with('success','Blood Donor successfully deleted');
+         return redirect('donors')->with('success','Blood Donor successfully deleted');
          
          } catch(Exception $e){
             DB::rollback();

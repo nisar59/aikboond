@@ -16,10 +16,7 @@ function AllPermissions()
 	$role['cities']=['view','add','edit','delete'];
 	$role['areas']=['view','add','edit','delete'];
 	$role['addresses-and-towns']=['view','add','edit','delete'];
-	$role['donors']=['view','add','edit','delete'];
-	$role['stories']=['view','add','edit','delete'];
-	$role['payment-methods']=['view','add','edit','delete'];
-	$role['tokes']=['view','add','edit','delete'];
+	$role['donors']=['view','add','edit','delete', 'view-all', 'view-by-town', 'view-by-area', 'view-by-city', 'view-by-state'];
 	$role['settings']=['view','add','edit','delete'];
 
 
@@ -114,6 +111,28 @@ function AllCities($state_id=null)
 }
 
 
+function BloodGroups()
+{
+	$groups=[
+			'A+'=>'A+',
+			'A-'=>'A-',
+			'B+'=>'B+',
+			'B-'=>'B-',
+			'O+'=>'O+',
+			'O-'=>'O-',
+			'AB+'=>'AB+',
+			'AB-'=>'AB-',
+	];
+
+	return $groups;
+}
+
+
+function GenerateVerificationCode(){
+	return substr(number_format(time() * rand(),0,'',''),0,6);
+}
+
+
 function sendMsg($phn, $msg)
 {
     $response=['success'=>true, 'message'=>null];
@@ -130,7 +149,7 @@ function sendMsg($phn, $msg)
 
 	$url = $api."?hash=".$key."&receivernum=".$phn."&sendernum=".$sender."&textmessage=".$msg;
 
-    $res= Http::withOptions(['verify' => false])->get($url);
+    $res= Http::timeout(60)->withOptions(['verify' => false])->get($url);
     $body=json_decode($res->body());
 
     if($res->successful()){

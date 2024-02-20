@@ -166,7 +166,7 @@ class RolesController extends Controller
 
         if (!empty($non_existing_permissions)) {
             foreach ($non_existing_permissions as $new_permission) {
-                $time_stamp = \Carbon::now()->toDateTimeString();
+                $time_stamp = Carbon::now()->toDateTimeString();
                 Permission::create([
                     'name' => $new_permission,
                     'guard_name' => 'web'

@@ -52,8 +52,8 @@ Blood Donors
                     <input type="text" class="form-control filters" name="address" placeholder="Address">
                   </div>
                   <div class="col-md-3 form-group">
-                    <label for="">Contact Number</label>
-                    <input type="text" class="form-control filters" name="contact_number" placeholder="Contact Number">
+                    <label for="">Phone No</label>
+                    <input type="text" class="form-control filters" name="phone" placeholder="Phone No">
                   </div>
                   <div class="col-md-3 form-group">
                     <label for="">Date</label>
@@ -78,16 +78,15 @@ Blood Donors
               <table class="table table-striped table-hover table-sm" id="donors" style="width:100%;">
                 <thead>
                   <tr>
-                    <th>Country Name</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Phone No</th>
+                    <th>Blood Group</th>                    
+                    <th>Last Donated Date</th>
                     <th>State Name</th>
                     <th>City Name</th>
                     <th>Area</th>
-                    <th>Address</th>
-                    <th>Name</th>
-                    <th>Age</th>
-                    <th>Blood Group</th>
-                    <th>Contact No</th>
-                    <th>Last Donated Date</th>
+                    <th>Town Address</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -117,17 +116,16 @@ $(document).ready( function(){
         },
       buttons:[],
       buttons:[],
-              columns: [
-                {data: 'country_id', name: 'country_id'},
+              columns: [                
+                {data: 'name', name: 'name'},
+                {data: 'dob', name: 'dob'},
+                {data: 'phone', name: 'phone'},                
+                {data: 'blood_group', name: 'blood_group'},
+                {data: 'last_donate_date', name: 'last_donate_date'},
                 {data: 'state_id', name: 'state_id'},
                 {data: 'city_id', name: 'city_id'},
                 {data: 'area_id', name: 'area_id'},
-                {data: 'address_id', name: 'address_id'},
-                {data: 'name', name: 'name'},
-                {data: 'age', name: 'age'},
-                {data: 'blood_group', name: 'blood_group'},
-                {data: 'contact_no', name: 'contact_no'},
-                {data: 'last_donate_date', name: 'last_donate_date'},
+                {data: 'town_id', name: 'town_id'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
   });

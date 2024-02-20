@@ -7,7 +7,7 @@ success.play();*/
     message: msg,
     position: pos,
     closeOnEscape: true,
-    timeout:50000
+    timeout:3000
 
   });
 
@@ -23,7 +23,7 @@ success.play();*/
     message: msg,
     position: pos,
     closeOnEscape: true,
-    timeout:50000
+    timeout:3000
 
   });
 
@@ -38,7 +38,7 @@ error.play();*/
     message: msg,
     position: pos,
     closeOnEscape: true,
-    timeout:50000
+    timeout:3000
   });
 
 }
@@ -52,7 +52,7 @@ iziToast.warning({
 	message: msg,
 	position: pos,
   closeOnEscape: true,
-  timeout:50000
+  timeout:3000
 
 });
 

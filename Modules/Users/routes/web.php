@@ -24,11 +24,9 @@ Route::group(['prefix'=>'users','middleware' => ['permission:users.add']],functi
 Route::group(['prefix'=>'users','middleware' => ['permission:users.edit']],function(){
 	Route::get('/edit/{id}', 'UsersController@edit');
 	Route::POST('/update/{id}', 'UsersController@update');
+	Route::POST('/status/{id}', 'UsersController@status');
 });
 Route::group(['prefix'=>'users','middleware' => ['permission:users.delete']],function(){
 	Route::get('/destroy/{id}', 'UsersController@destroy');
 });
 
-Route::group(['prefix'=>'registered-people','middleware' => ['permission:users.view']],function(){
-	Route::get('/', 'UsersController@people');
-});

@@ -37,11 +37,11 @@ Settings
                   </div>
                   <div class="card-body">
                     <div class="row">
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-md-6">
                       <label>Panel Name</label>
                       <input type="text" class="form-control" name="panel_name" value="{{$sett->portal_name}}" placeholder="Panel Name">
                     </div>
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-md-6">
                       <label>Panel Email</label>
                       <input type="email" class="form-control" name="panel_email" value="{{$sett->portal_email}}" placeholder="Panel Email">
                     </div>
@@ -73,20 +73,80 @@ Settings
                       <img src="{{$footer_logo}}" class="image-display" id="footer-display" width="100" height="100">
                     </div>
                   </div>
+
+
+
+
                     <div class="row">
+
                     <div class="form-group col-md-12">
-                      <label>Footer Text</label>
-                      <input type="text" class="form-control" name="footer_text" value="{{$sett->footer_text}}" placeholder="Footer Text">
+                      <label>Platform Service Fee</label>
+                      <select name="platform_service_fee" class="form-control select2">
+                        @for($i=0; $i<500; $i++)
+                        <option @if($sett->platform_service_fee==$i) selected @endif value="{{$i}}">Rs. {{$i}}</option>
+                        @endfor
+                      </select>
                     </div>
-                    <div class="form-group col-md-12">
+
+
+
+                    <div class="form-group col-md-6">
+                      <label>Minimum Age</label>
+                      <select name="mini_age" class="form-control select2">
+                        @for($i=0; $i<100; $i++)
+                        <option @if($sett->mini_age==$i) selected @endif value="{{$i}}">{{$i}} years</option>
+                        @endfor
+                      </select>
+                    </div>
+
+
+
+                    <div class="form-group col-md-6">
+                      <label>Maximum Age</label> 
+                      <select name="max_age" class="form-control select2">
+                        @for($i=0; $i<100; $i++)
+                        <option @if($sett->max_age==$i) selected @endif value="{{$i}}">{{$i}} years</option>
+                        @endfor
+                      </select>
+
+                    </div>
+
+
+                    <div class="form-group col-md-6">
+                      <label>Minimum Compensation</label>
+                      <select name="mini_compensation" class="form-control select2">
+                        @for($i=0; $i<100; $i++)
+                        <option @if($sett->mini_compensation==$i) selected @endif value="{{$i}}">Rs. {{$i}}</option>
+                        @endfor
+                      </select>
+                    </div>
+
+
+                    <div class="form-group col-md-6">
+                      <label>Service Fee Compensation</label>
+                      <select name="mini_service_compensation" class="form-control select2">
+                        @for($i=0; $i<100; $i++)
+                        <option @if($sett->mini_service_compensation==$i) selected @endif value="{{$i}}"> {{$i}}%</option>
+                        @endfor
+                      </select>
+                    </div>
+                  </div>
+
+
+
+                    <div class="row">
+                    <div class="form-group col-md-6">
                       <label>SMS API</label>
                       <input type="text" class="form-control" name="sms_api" value="{{$sett->sms_api}}" placeholder="SMS API">
                     </div>
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-md-6">
                       <label>SMS API Secret</label>
                       <input type="text" class="form-control" name="sms_api_secret" value="{{$sett->sms_api_secret}}" placeholder="SMS API Secret">
                     </div>
                   </div>
+
+
+
                 </div>
                   <div class="card-footer text-right">
                     <button class="btn btn-primary mr-1" type="submit">Submit</button>

@@ -12,8 +12,12 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Countries;
+use App\Models\States;
+use Modules\Cities\Entities\Cities;
+use Modules\Areas\Entities\Areas;
+use Modules\AddressesAndTowns\Entities\AddressesAndTowns;
 use Auth;
-use Modules\Users\Entities\People;
 class UsersController extends Controller
 {
     /**
@@ -24,7 +28,7 @@ class UsersController extends Controller
     {
         //dd(Auth::user()->roles[0]->name);
     if (request()->ajax()) {
-        $users=User::with('roles')->select('id','name','email')->orderBy('id','ASC')->get();
+        $users=User::with('roles')->orderBy('id','ASC')->get();
             return DataTables::of($users)
                 ->addColumn('action', function ($row) {
                     $action='';
@@ -48,7 +52,11 @@ class UsersController extends Controller
                 return $action;
                 })
                 ->addColumn('role', function ($row) {
-                    return $row->roles[0]->name;
+                    $roles='';
+                    foreach ($row->roles as $key => $role) {
+                      $roles.='<span class="badge badge-primary">'.$role->name.'</span>';
+                    }
+                    return $roles;
                 })
                 ->editColumn('name', function ($row) {
                     return $row->name;
@@ -56,6 +64,31 @@ class UsersController extends Controller
                 ->editColumn('email', function ($row) {
                     return $row->email;
                 })
+
+                ->editColumn('state_id', function ($row) {
+                    if($row->state()->exists()){
+                        return $row->state->name;
+                    }
+                })
+
+                ->editColumn('city_id', function ($row) {
+                    if($row->city()->exists()){
+                        return $row->city->name;
+                    }
+                })
+
+                ->editColumn('area_id', function ($row) {
+                    if($row->area()->exists()){
+                        return $row->area->name;
+                    }
+                })
+
+                ->editColumn('town_id', function ($row) {
+                    if($row->town()->exists()){
+                        return $row->town->name;
+                    }
+                })
+
                 ->removeColumn('id')
                 ->rawColumns(['action','role'])
                 ->make(true);
@@ -66,38 +99,6 @@ class UsersController extends Controller
     }
 
 
-
-    public function people()
-    {
-        //dd(Auth::user()->roles[0]->name);
-    if (request()->ajax()) {
-        $users=People::select('phone','otp')->orderBy('id','ASC')->get();
-            return DataTables::of($users)
-                ->addColumn('action', function ($row) {
-                    $action='';
-
-                if(Auth::user()->can('users.delete')){
-                $action.='<a class="btn btn-danger btn-sm" href="'.url('users/destroy/'.$row->id).'"><i class="fas fa-trash-alt"></i></a>';
-                    }
-              
-                return $action;
-                })
-
-                ->editColumn('phone', function ($row) {
-                    return $row->phone;
-                })
-                ->editColumn('otp', function ($row) {
-                    return $row->otp;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-    }
-
-
-        return view('users::people');    
-    }
-
-
     /**
      * Show the form for creating a new resource.
      * @return Renderable
@@ -105,6 +106,7 @@ class UsersController extends Controller
     public function create()
     {
         $this->data['role']=Role::where('name','!=','super-admin')->get();
+        $this->data['states']=States::where('country_id',167)->get();
         return view('users::create')->withData($this->data);
     }
 
@@ -118,8 +120,16 @@ class UsersController extends Controller
         $req->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => ['required', 'string', 'phone', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
             'role' => ['required'],
+            'country_id'=>['required'],
+            'state_id'=>['required'],
+            'city_id'=>['required'],
+            'area_id'=>['required'],
+            'town_id'=>['required'],
+            'address'=>['required'],
+
         ]);
 
         $path=public_path('img/users');
@@ -127,11 +137,19 @@ class UsersController extends Controller
         $user=User::create([
             'name' => $req->name,
             'email' => $req->email,
+            'phone' => $req->phone,
             'password' => Hash::make($req->password),
-            'image'=>FileUpload($req->file('image'), $path)
+            'image'=>FileUpload($req->file('image'), $path),
+            'country_id'=>$req->country_id,
+            'state_id'=>$req->state_id,
+            'city_id'=>$req->city_id,
+            'area_id'=>$req->area_id,
+            'town_id'=>$req->town_id,
+            'address'=>$req->address,
+
         ]);
         if($user->assignRole($req->role)){
-            return redirect('admin/users')->with('success', 'User successfully created');
+            return redirect('users')->with('success', 'User successfully created');
         }
     }
 
@@ -154,6 +172,7 @@ class UsersController extends Controller
     {
         $this->data['role']=Role::where('name','!=','super-admin')->get();
         $this->data['user']=User::with('roles')->find($id);
+        $this->data['states']=States::where('country_id',167)->get();
         return view('users::edit')->withData($this->data);
     }
 
@@ -167,14 +186,30 @@ class UsersController extends Controller
     {
         $req->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$id],
+            'phone' => ['required', 'string','max:255', 'unique:users,phone,'.$id],
             'role' => ['required'],
+            'country_id'=>['required'],
+            'state_id'=>['required'],
+            'city_id'=>['required'],
+            'area_id'=>['required'],
+            'town_id'=>['required'],
+            'address'=>['required'],
         ]);
+
         $path=public_path('img/users');
 
         $user=User::find($id);
         $user->name=$req->name;
         $user->email=$req->email;
+        $user->phone=$req->phone;
+        $user->country_id=$req->country_id;
+        $user->state_id=$req->state_id;
+        $user->city_id=$req->city_id;
+        $user->area_id=$req->area_id;
+        $user->town_id=$req->town_id;
+        $user->address=$req->address;
+
         if($req->password!=null){
         $user->password=Hash::make($req->password);
         }
@@ -184,7 +219,7 @@ class UsersController extends Controller
         $user->save();
         $user->roles()->detach();
         if($user->assignRole($req->role)){
-            return redirect('admin/users')->with('success', 'User successfully Updated');
+            return redirect('users')->with('success', 'User successfully Updated');
         }
     }
 
@@ -203,86 +238,25 @@ class UsersController extends Controller
     }
     
     
-    public function register(Request $req){
+    /**
+     * Remove the specified resource from storage.
+     * @param int $id
+     * @return Renderable
+     */
+    public function status($id)
+    {
+       $user=User::find($id);
+       if($user->status==0){
+        $user->status=1;
+       }else{
+        $user->status=0;
+       }
+       $user->save();
+       return redirect('users')->with('success','User status successfully updated');
+
+    }
+
 
     
-    $api_key=Settings()->sms_api;
-    $api_sec=Settings()->sms_api_secret;
-    
-    $code=rand ( 1000 , 9999 );
-    
-    $phone=$req->phone;
-    
-    if($phone==null){
-         return response()->json(['success'=>false]);
-    }
-    
-    if(substr( $phone, 0, 2) !== "88"){
-        $phone="88".$phone;
-    }
-    
-    $people=People::firstOrCreate(['phone'=>$phone]);
-    
-    $people->phone=$phone;
-    $people->otp=$code;
-    
-    if($people->save()){
-    $post = [
-        'to'   => $phone,
-        'text'=>"Your ".Settings()->portal_name." OTP is ".$code." Don't share with anyone for security reasons",
-    ];
-   
-    
-    $header= array(                                                              
-    'Content-Type: application/x-www-form-urlencoded',                         
-    "Accept: application/json",
-    
-    ); 
-        
-      $curl_handle=curl_init();
-      curl_setopt($curl_handle,CURLOPT_URL,'https://brain.sendlime.com/sms');
-      curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);
-      curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
-      curl_setopt($curl_handle, CURLOPT_HTTPHEADER, $header);  
-      curl_setopt($curl_handle, CURLOPT_CUSTOMREQUEST,'POST');
-      curl_setopt($curl_handle, CURLOPT_USERPWD, $api_key . ":" . $api_sec);
-     curl_setopt($curl_handle, CURLOPT_SSL_VERIFYPEER,false);
-     curl_setopt($curl_handle, CURLOPT_SSL_VERIFYHOST,false);
-    
-      curl_setopt($curl_handle, CURLOPT_POSTFIELDS, http_build_query($post));
-      $buffer = curl_exec($curl_handle);
-      curl_close($curl_handle);
-      
-      return $buffer;
-    }
-    else{
-        return response()->json(['success'=>false]);
-    }
-  
-  
-    }
-    
-    public function verify(Request $req){
-        
-        $phone=$req->phone;
-        
-        if($phone==null){
-             return response()->json(['success'=>false]);
-        }
-        
-        if(substr( $phone, 0, 2) !== "88"){
-            $phone="88".$phone;
-        }
-        
-      $people=People::where('phone',$phone)->where('otp',$req->otp)->first();
-      
-      if($people!=null){
-           return response()->json(['success'=>true]);
-      }
-      else{
-           return response()->json(['success'=>false]);
-      }
-      
-      
-    }
+
 }

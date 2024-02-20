@@ -65,7 +65,16 @@ class SettingsController extends Controller
         $settings->portal_logo=$portal_logo;
         $settings->portal_favicon=$portal_favicon;
         $settings->footer_logo=$footer_logo;
-        $settings->footer_text=$req->footer_text;
+
+
+        $settings->platform_service_fee=$req->platform_service_fee;
+        $settings->mini_age=$req->mini_age;
+        $settings->max_age=$req->max_age;
+        $settings->mini_compensation=$req->mini_compensation;
+        $settings->mini_service_compensation=$req->mini_service_compensation;
+
+
+
         $settings->sms_api=$req->sms_api;
         $settings->sms_api_secret=$req->sms_api_secret;
         if($settings->save()){
