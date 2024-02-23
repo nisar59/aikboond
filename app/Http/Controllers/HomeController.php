@@ -9,7 +9,9 @@ use Modules\Cities\Entities\Cities;
 use Modules\Areas\Entities\Areas;
 use Modules\AddressesAndTowns\Entities\AddressesAndTowns;
 use App\Models\VerificationMsgs;
+use Modules\Donors\Entities\Donor;
 use Throwable;
+use Artisan;
 use Auth;
 class HomeController extends Controller
 {
@@ -30,6 +32,31 @@ class HomeController extends Controller
      */
     public function index()
     {
+
+        Artisan::call('reg:compensation 2024-02-19');
+
+        $user=Auth::user();
+
+        $donors=Donor::query();
+
+        if(!$user->hasRole('super-admin') && $user->can('donors.view-all')){
+            
+       }
+       elseif(!$user->hasRole('super-admin') && $user->can('donors.view-by-state')){
+            $donors->where('state_id', $user->state_id);
+       }
+       elseif(!$user->hasRole('super-admin') && $user->can('donors.view-by-city')){
+            $donors->where('city_id', $user->city_id);
+       }
+        elseif(!$user->hasRole('super-admin') && $user->can('donors.view-by-area')){
+            $donors->where('area_id', $user->area_id);
+       }            
+       else{
+            $donors->where('town_id', $user->town_id);
+       }
+
+
+
         return view('home');
     }
 

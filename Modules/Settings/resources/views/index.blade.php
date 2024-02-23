@@ -79,7 +79,7 @@ Settings
 
                     <div class="row">
 
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-md-6">
                       <label>Platform Service Fee</label>
                       <select name="platform_service_fee" class="form-control select2">
                         @for($i=0; $i<500; $i++)
@@ -109,6 +109,16 @@ Settings
                         @endfor
                       </select>
 
+                    </div>
+
+
+                    <div class="form-group col-md-6">
+                      <label>Compensation For</label>
+                      <select name="compensation_for[]" multiple class="form-control select2">
+                       @foreach($data['roles'] as $role)
+                       <option @if(in_array( $role->name, $sett->compensation_for)) selected @endif value="{{$role->name}}">{{$role->name}}</option>
+                       @endforeach
+                      </select>
                     </div>
 
 

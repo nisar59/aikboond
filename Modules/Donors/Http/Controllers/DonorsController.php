@@ -33,16 +33,16 @@ class DonorsController extends Controller
 
             $donors=Donor::query();
 
-            if(!$user->hasRole('super-admin') && $user->can('view-all')){
+            if(!$user->hasRole('super-admin') && $user->can('donors.view-all')){
                 
            }
-           elseif(!$user->hasRole('super-admin') && $user->can('view-by-state')){
+           elseif(!$user->hasRole('super-admin') && $user->can('donors.view-by-state')){
                 $donors->where('state_id', $user->state_id);
            }
-           elseif(!$user->hasRole('super-admin') && $user->can('view-by-city')){
+           elseif(!$user->hasRole('super-admin') && $user->can('donors.view-by-city')){
                 $donors->where('city_id', $user->city_id);
            }
-            elseif(!$user->hasRole('super-admin') && $user->can('view-by-area')){
+            elseif(!$user->hasRole('super-admin') && $user->can('donors.view-by-area')){
                 $donors->where('area_id', $user->area_id);
            }            
            else{
@@ -153,7 +153,7 @@ class DonorsController extends Controller
     {
         $req->validate([
             'name'=>'required',
-            'phone'=>'required|min:11|max:11|unique:donors',
+            'phone'=>'required|min:11|max:11|unique:donors,phone',
             'verification_code'=>'required | min:6 | max:6',
             'dob'=>'required',
             'blood_group'=>'required',

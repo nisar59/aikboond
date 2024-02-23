@@ -17,6 +17,7 @@ use App\Models\States;
 use Modules\Cities\Entities\Cities;
 use Modules\Areas\Entities\Areas;
 use Modules\AddressesAndTowns\Entities\AddressesAndTowns;
+use Throwable;
 use Auth;
 class UsersController extends Controller
 {
@@ -119,8 +120,8 @@ class UsersController extends Controller
     {
         $req->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone' => ['required', 'string', 'phone', 'max:255', 'unique:users'],
+            'email' => ['required', 'string','max:255', 'unique:users,email'],
+            'phone' => ['required', 'string', 'max:255', 'unique:users,phone'],
             'password' => ['required', 'string', 'min:8'],
             'role' => ['required'],
             'country_id'=>['required'],
@@ -186,7 +187,7 @@ class UsersController extends Controller
     {
         $req->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$id],
+            'email' => ['required', 'string','max:255', 'unique:users,email,'.$id],
             'phone' => ['required', 'string','max:255', 'unique:users,phone,'.$id],
             'role' => ['required'],
             'country_id'=>['required'],

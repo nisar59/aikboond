@@ -6,6 +6,8 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Settings\Entities\Settings;
+use Spatie\Permission\Models\Role;
+
 class SettingsController extends Controller
 {
     /**
@@ -17,6 +19,7 @@ class SettingsController extends Controller
         //dd(sendMsg('923025869931', 'testing'));
 
         $this->data['settings']=Settings::first();
+        $this->data['roles']=Role::whereNot('name', 'super-admin')->get();
         return view('settings::index')->withData($this->data);
     }
 
@@ -72,7 +75,7 @@ class SettingsController extends Controller
         $settings->max_age=$req->max_age;
         $settings->mini_compensation=$req->mini_compensation;
         $settings->mini_service_compensation=$req->mini_service_compensation;
-
+        $settings->compensation_for=json_encode($req->compensation_for);
 
 
         $settings->sms_api=$req->sms_api;

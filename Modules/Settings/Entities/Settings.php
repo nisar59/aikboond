@@ -15,4 +15,10 @@ class Settings extends Model
     {
         return \Modules\Settings\Database\factories\SettingsFactory::new();
     }
+
+
+    public function getCompensationForAttribute($value)
+    {
+        return (array) json_decode($value);
+    }
 }

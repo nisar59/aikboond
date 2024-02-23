@@ -27,39 +27,50 @@ $pref=Request()->route()->getPrefix();
 
             @endcan
             @can('permissions.view')
-            <li class="dropdown @if($pref=='/roles') active @endif"><a class="nav-link" href="{{url('/roles')}}"><i class="fas fa-hands-helping"></i><span>Roles & Permissions</span></a></li>
+            <li class="dropdown @if($pref=='/roles') active @endif"><a class="nav-link" href="{{url('/roles')}}"><i class="fas fa-user-shield"></i><span>Roles & Permissions</span></a></li>
             @endcan
 
 
-            <li class="menu-header">Cities</li>
+            
             @can('cities.view')
+            <li class="menu-header">Cities</li>
             <li class="dropdown @if($pref=='/cities') active @endif">
               <a href="{{url('/cities')}}" class="nav-link"><i class="fas fa-city"></i><span>Cities</span></a>
             </li>
             @endcan
 
-            <li class="menu-header">Areas</li>
+            
             @can('areas.view')
+            <li class="menu-header">Areas</li>
             <li class="dropdown @if($pref=='/areas') active @endif">
               <a href="{{url('/areas')}}" class="nav-link"><i class="fa fa-map-marker" aria-hidden="true"></i><span>Areas</span></a>
             </li>
             @endcan
 
 
-            <li class="menu-header">Addresses And Towns</li>
+            
             @can('addresses-and-towns.view')
+            <li class="menu-header">Addresses And Towns</li>
             <li class="dropdown @if($pref=='/addresses-and-towns') active @endif">
               <a href="{{url('/addresses-and-towns')}}" class="nav-link"><i class="fa fa-address-card" aria-hidden="true"></i><span>Addresses And Towns</span></a>
             </li>
             @endcan
             
-            <li class="menu-header">Blood Donors</li>
+            
             @can('donors.view')
+            <li class="menu-header">Donors</li>
             <li class="dropdown @if($pref=='/donors') active @endif">
-              <a href="{{url('/donors')}}" class="nav-link"><i class="fas fa-indent"></i><span>Blood Donors</span></a>
+              <a href="{{url('/donors')}}" class="nav-link"><i class="fas fa-prescription-bottle"></i><span>Donors</span></a>
             </li>
             @endcan
 
+            
+            @can('compensation.view')
+            <li class="menu-header">Compensation</li>
+            <li class="dropdown @if($pref=='/compensation') active @endif">
+              <a href="{{url('/compensation')}}" class="nav-link"><i class="fas fa-wallet"></i><span>Compensation</span></a>
+            </li>
+            @endcan
 
             @can('settings.view')
             <li class="menu-header">Panel Settings</li>
