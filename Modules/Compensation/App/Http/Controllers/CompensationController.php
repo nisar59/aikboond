@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use App\Models\User;
 use Throwable;
+use Artisan;
 Use Auth;
 
 class CompensationController extends Controller
@@ -22,57 +23,74 @@ class CompensationController extends Controller
      */
     public function index()
     {
-        //dd(Auth::user()->roles[0]->name);
-    if (request()->ajax()) {
-        $users=User::with('roles')->orderBy('id','ASC')->get();
+
+        $req=request();
+    if ($req->ajax()) {
+        $users=Compensation::get();
+
             return DataTables::of($users)
-                ->addColumn('action', function ($row) {
-                    $action='';
-
-                $action.='<a class="btn btn-primary btn-sm" href="'.url('compensation/update/'.$row->id).'"><i class="fas fa-eye"></i></a>';
-
-                return $action;
-                })
                 ->addColumn('role', function ($row) {
                     $roles='';
-                    foreach ($row->roles as $key => $role) {
-                      $roles.='<span class="badge badge-primary">'.$role->name.'</span>';
+                    if($row->user()->exists()){
+                        foreach ($row->user->roles as $key => $role) {
+                          $roles.='<span class="badge badge-primary">'.$role->name.'</span>';
+                        }
                     }
                     return $roles;
                 })
-                ->editColumn('name', function ($row) {
-                    return $row->name;
+                ->addColumn('name', function ($row) {
+                     if($row->user()->exists()){
+                        return $row->user->name;
+                    }
                 })
-                ->editColumn('email', function ($row) {
-                    return $row->email;
+                ->addColumn('phone', function ($row) {
+                     if($row->user()->exists()){
+                    return $row->user->phone;
+                    }
                 })
-
-                ->editColumn('state_id', function ($row) {
-                    if($row->state()->exists()){
-                        return $row->state->name;
+                ->addColumn('state_id', function ($row) {
+                    if($row->user()->exists() && $row->user->state()->exists()){
+                        return $row->user->state->name;
                     }
                 })
 
-                ->editColumn('city_id', function ($row) {
-                    if($row->city()->exists()){
-                        return $row->city->name;
+                ->addColumn('city_id', function ($row) {
+                    if($row->user()->exists() && $row->user->city()->exists()){
+                        return $row->user->city->name;
                     }
                 })
 
-                ->editColumn('area_id', function ($row) {
-                    if($row->area()->exists()){
-                        return $row->area->name;
+                ->addColumn('area_id', function ($row) {
+
+                    if($row->user()->exists() && $row->user->area()->exists()){
+                        return $row->user->area->name;
                     }
                 })
 
-                ->editColumn('town_id', function ($row) {
-                    if($row->town()->exists()){
-                        return $row->town->name;
+                ->addColumn('town_id', function ($row) {
+
+                    if($row->user()->exists() && $row->user->town()->exists()){
+                        return $row->user->town->name;
                     }
                 })
+                ->addColumn('compensation', function ($row) {
+                    return 'Rs. '.$row->total_amount;
+                })
 
+                ->editColumn('status', function ($row) {
+                    $name='';
+                    if($row->user()->exists()){
+                        $name=$row->user->name;
+                    }
+                   if($row->status==0){
+                    return '<a href="javascript:void(0)" data-name="'.$name.'" data-href="'.url('compensation/pay',$row->id).'" class="pay pe-auto badge badge-primary">Unpaid</a>';
+                   }
+                    if($row->status==1){
+                    return '<span class="badge badge-success">Paid</span>';
+                   }
+                })
                 ->removeColumn('id')
-                ->rawColumns(['action','role'])
+                ->rawColumns(['role', 'status'])
                 ->make(true);
     }
 
@@ -115,9 +133,20 @@ class CompensationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $req)
     {
-        //
+       
+        try {        
+            $month=Carbon::parse($req->month)->format('Y-m-d');
+            Artisan::call('reg:compensation '.$month);
+            return redirect('compensation')->with('info','Generating Compensation is in process, keep checking the status by refreshing the page.');
+        }catch(Exception $ex){
+            DB::rollback();
+         return redirect()->back()->with('error','Something went wrong with this error: '.$ex->getMessage());
+        }catch(Throwable $ex){
+            DB::rollback();
+        return redirect()->back()->with('error','Something went wrong with this error: '.$ex->getMessage());
+        }
     }
 
     /**

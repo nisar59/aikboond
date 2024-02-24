@@ -106,8 +106,9 @@
       </div>
       </div>
       @include('layouts.footer')
-        </div>
+    </div>
   </div>
+    @yield('mdl')
     @include('layouts.footer-js')
 
 <script type="text/javascript">

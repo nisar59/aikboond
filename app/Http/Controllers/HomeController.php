@@ -33,8 +33,6 @@ class HomeController extends Controller
     public function index()
     {
 
-        Artisan::call('reg:compensation 2024-02-19');
-
         $user=Auth::user();
 
         $donors=Donor::query();
