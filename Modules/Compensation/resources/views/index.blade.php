@@ -36,7 +36,7 @@ Compensation
           <div class="card-header">
             <h4 class="col-md-6">Compensation</h4>
             <div class="col-md-6 text-right">
-            <a href="javascript:void(0)" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-success">Calculate</a>
+            <a href="javascript:void(0)" data-toggle="modal" data-target="#calculate-compensation" class="btn btn-success">Calculate</a>
             </div>
           </div>
           <div class="card-body">
