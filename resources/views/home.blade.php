@@ -15,7 +15,7 @@ Dashboard
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3 m-auto">
                   <div class="card-content">
                     <h5 class="font-15">Donors Registered</h5>
-                    <h2 class="mb-3 font-18">{{number_format(0, 2)}}</h2>
+                    <h2 class="mb-3 font-18">{{number_format($donors)}}</h2>
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0 m-auto">
@@ -58,7 +58,7 @@ Dashboard
           <h4>Statistics</h4>
         </div>
         <div class="card-body">
-          <canvas id="statistics"></canvas>
+          <h3 class="text-center text-uppercase">comming soon</h3>
         </div>
       </div>
     </div>

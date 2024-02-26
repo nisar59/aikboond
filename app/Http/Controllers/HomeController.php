@@ -38,7 +38,6 @@ class HomeController extends Controller
         $donors=Donor::query();
 
         if(!$user->hasRole('super-admin') && $user->can('donors.view-all')){
-            
        }
        elseif(!$user->hasRole('super-admin') && $user->can('donors.view-by-state')){
             $donors->where('state_id', $user->state_id);
@@ -53,9 +52,10 @@ class HomeController extends Controller
             $donors->where('town_id', $user->town_id);
        }
 
+       $donors=$donors->count();
 
 
-        return view('home');
+        return view('home', compact('donors'));
     }
 
 
