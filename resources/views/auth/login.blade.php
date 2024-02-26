@@ -38,10 +38,7 @@
                 @csrf
                   <div class="form-group">
                     <label for="email">Email</label>
-                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" tabindex="1" required autofocus  value="{{ old('email') }}">
-                    <div class="invalid-feedback">
-                      Please fill in your email
-                    </div>
+                    <input id="email" type="email" placeholder="Email" class="form-control @error('email') is-invalid @enderror" name="email" tabindex="1" required autofocus  value="{{ old('email') }}">
                     @error('email')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -52,10 +49,7 @@
                     <div class="d-block">
                       <label for="password" class="control-label">Password</label>
                     </div>
-                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" tabindex="2" required>
-                    <div class="invalid-feedback">
-                      please fill in your password
-                    </div>
+                    <input id="password" placeholder="Password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" tabindex="2" required>
                     @error('password')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -73,14 +67,6 @@
                     <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
                       Login
                     </button>
-                    <p class="text-center">Have not an account? <a href="{{url('register')}}">Register</a></p>
-                  </div>
-                  <div class="text-center">
-                        @if (Route::has('password.request'))
-                            <a class="text-small" href="{{ route('password.request') }}">
-                                {{ __('Forgot Your Password?') }}
-                            </a>
-                        @endif
                   </div>
                 </form>
               </div>
