@@ -50,10 +50,10 @@ class AreasController extends Controller
            ->addColumn('action',function ($row){
                $action='';
                if(Auth::user()->can('areas')){
-               $action.='<a class="btn btn-primary btn-sm m-1" href="'.url('admin/areas/edit/'.$row->id).'"><i class="fas fa-pencil-alt"></i></a>';
+               $action.='<a class="btn btn-primary btn-sm m-1" href="'.url('/areas/edit/'.$row->id).'"><i class="fas fa-pencil-alt"></i></a>';
             }
             if(Auth::user()->can('areas.delete')){
-               $action.='<a class="btn btn-danger btn-sm m-1" href="'.url('admin/areas/destroy/'.$row->id).'"><i class="fas fa-trash-alt"></i></a>';
+               $action.='<a class="btn btn-danger btn-sm m-1" href="'.url('/areas/destroy/'.$row->id).'"><i class="fas fa-trash-alt"></i></a>';
            }
                return $action;
            })
@@ -157,7 +157,7 @@ class AreasController extends Controller
          try{
             Areas::find($id)->update($req->except('_token'));
             DB::commit();
-            return redirect('admin/areas')->with('success','Areas sccessfully Updated');
+            return redirect('/areas')->with('success','Areas sccessfully Updated');
          }catch(Exception $ex){
             DB::rollback();
          return redirect()->back()->with('error','Something went wrong with this error: '.$ex->getMessage());
@@ -180,7 +180,7 @@ class AreasController extends Controller
         try{
         Areas::find($id)->delete();
         DB::commit();
-         return redirect('admin/areas')->with('success','Area successfully deleted');
+         return redirect('/areas')->with('success','Area successfully deleted');
          
          } catch(Exception $e){
             DB::rollback();

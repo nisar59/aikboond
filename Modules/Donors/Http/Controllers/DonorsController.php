@@ -84,10 +84,10 @@ class DonorsController extends Controller
            ->addColumn('action',function ($row){
                $action='';
                if(Auth::user()->can('donors.edit')){
-               $action.='<a class="btn btn-primary btn-sm m-1" href="'.url('admin/donors/edit/'.$row->id).'"><i class="fas fa-pencil-alt"></i></a>';
+               $action.='<a class="btn btn-primary btn-sm m-1" href="'.url('/donors/edit/'.$row->id).'"><i class="fas fa-pencil-alt"></i></a>';
             }
             if(Auth::user()->can('donors.delete')){
-               $action.='<a class="btn btn-danger btn-sm m-1" href="'.url('admin/donors/destroy/'.$row->id).'"><i class="fas fa-trash-alt"></i></a>';
+               $action.='<a class="btn btn-danger btn-sm m-1" href="'.url('/donors/destroy/'.$row->id).'"><i class="fas fa-trash-alt"></i></a>';
            }
                return $action;
            })
