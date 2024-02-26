@@ -75,7 +75,7 @@ Blood Donors
           </div>
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-striped table-hover table-sm" id="donors" style="width:100%;">
+              <table class="table table-sm table-bordered table-striped table-hover table-sm" id="donors" style="width:100%;">
                 <thead>
                   <tr>
                     <th>Name</th>

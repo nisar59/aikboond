@@ -62,7 +62,7 @@ Addresses And Towns
           </div>
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-striped table-hover table-sm" id="addresses_and_towns" style="width:100%;">
+              <table class="table table-sm table-bordered table-striped table-hover table-sm" id="addresses_and_towns" style="width:100%;">
                 <thead>
                   <tr>
                     <th>Country Name</th>
