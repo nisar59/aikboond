@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Auth::routes();
+Auth::routes(['register'=>false]);
 Route::any('/logout', 'Auth\LoginController@logout');
 
 Route::group(['middleware'=>'auth'], function(){
