@@ -37,7 +37,7 @@ class HomeController extends Controller
 
         $donors=Donor::query();
 
-        if(!$user->hasRole('super-admin') && $user->can('donors.view-all')){
+        if($user->hasRole('super-admin') || $user->can('donors.view-all')){
        }
        elseif(!$user->hasRole('super-admin') && $user->can('donors.view-by-state')){
             $donors->where('state_id', $user->state_id);
