@@ -167,7 +167,7 @@ class HomeController extends Controller
             }
 
             $code=GenerateVerificationCode();
-            $msg="Your aikboond verification code is: ".$code. ", don't share this code anyone.";
+            $msg="Your aikboond verification code is: ".$code. ", don't share this code with anyone.";
             $msg_rsp=sendMsg($phone, $msg);
 
 

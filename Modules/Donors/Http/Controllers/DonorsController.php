@@ -33,7 +33,7 @@ class DonorsController extends Controller
 
             $donors=Donor::query();
 
-            if(!$user->hasRole('super-admin') && $user->can('donors.view-all')){
+            if($user->hasRole('super-admin') || $user->can('donors.view-all')){
                 
            }
            elseif(!$user->hasRole('super-admin') && $user->can('donors.view-by-state')){
