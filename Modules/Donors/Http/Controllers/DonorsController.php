@@ -157,7 +157,6 @@ class DonorsController extends Controller
             'verification_code'=>'required | min:6 | max:6',
             'dob'=>'required',
             'blood_group'=>'required',
-            'image'=>'required',
             'country_id'=>'required',
             'state_id'=>'required',
             'city_id'=>'required',
@@ -195,7 +194,7 @@ class DonorsController extends Controller
 
             $inputs=$req->except('_token','verification_code', 'image', 'phone');
             $path=public_path('img/donors');
-            $inputs['image']=FileUpload($req->image, $path);
+            //$inputs['image']=FileUpload($req->image, $path);
             $inputs['user_id']=Auth::user()->id;
             $inputs['phone']=$phone;
 

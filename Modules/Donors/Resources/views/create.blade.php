@@ -17,11 +17,11 @@ Blood Donor
             <div class="card-body pt-1">
               <div class="row">
 
-                <div class="col-12 text-center">
+<!--                 <div class="col-12 text-center">
                   <input type="file" name="image" hidden onchange="document.getElementById('image-preview').src = window.URL.createObjectURL(this.files[0])" id="image-input">
                  <label for="image-input"> <img width="120px" height="120px" id="image-preview" class="rounded-circle" src="{{asset('img/images.png')}}" alt="">
                  </label>
-                </div>
+                </div> -->
 
                 <div class="form-group col-md-6">
                   <label>Name</label>
