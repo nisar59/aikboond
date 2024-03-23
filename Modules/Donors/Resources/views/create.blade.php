@@ -292,7 +292,7 @@ function countdown(minutes, seconds) {
                 }, 1000);
             }else{
               counter.innerHTML='Get Code';
-              $("get-code").prop('disabled', false);  
+              $("#get-code").prop('disabled', false);  
             }
         }
     }
