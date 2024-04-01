@@ -18,6 +18,7 @@
 
   <script src="{{asset('assets/js/page/datatables.js')}}"></script>
   <script src="{{asset('assets/bundles/izitoast/js/iziToast.min.js')}}"></script>
+  <script src="{{asset('assets/bundles/sweetalert/sweetalert.min.js')}}"></script>
 
     <!-- Custom JS File -->
   <script src="{{asset('assets/bundles/tinymce/form-editor.init.js')}}"></script>
@@ -31,6 +32,26 @@
   <script type="text/javascript">
 
   $(document).ready(function(){
+
+
+  $(document).on('click', '.verify-prompt', function(e) {
+              ele=$(this);
+              e.preventDefault();
+              swal({
+                title: ele.data('prompt-msg'),
+                buttons: {
+                  cancel: true,
+                  confirm: true,
+                },
+                icon: "warning",
+              }).then((result) => {
+                if(result==true){
+                  window.location.href=$(this).data('href');     
+                }
+            });
+
+  });
+
 
     $(".layout-color input:radio").change(function () {
        var val=$(this).val();

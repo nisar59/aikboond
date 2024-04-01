@@ -87,7 +87,7 @@ class DonorsController extends Controller
                $action.='<a class="btn btn-primary btn-sm m-1" href="'.url('/donors/edit/'.$row->id).'"><i class="fas fa-pencil-alt"></i></a>';
             }
             if(Auth::user()->can('donors.delete')){
-               $action.='<a class="btn btn-danger btn-sm m-1" href="'.url('/donors/destroy/'.$row->id).'"><i class="fas fa-trash-alt"></i></a>';
+               $action.='<a class="btn btn-danger btn-sm m-1 verify-prompt" href="javascript:void(0)" data-prompt-msg="Are you sure you want to delete this donor?" data-href="'.url('/donors/destroy/'.$row->id).'"><i class="fas fa-trash-alt"></i></a>';
            }
                return $action;
            })
