@@ -17,6 +17,7 @@ function AllPermissions()
 	$role['areas']=['view','add','edit','delete'];
 	$role['addresses-and-towns']=['view','add','edit','delete'];
 	$role['donors']=['view','add','edit','delete', 'view-all', 'view-by-town', 'view-by-area', 'view-by-city', 'view-by-state'];
+	$role['requests']=['view','edit','delete'];
 	$role['compensation']=['view','add','edit','delete'];
 	$role['settings']=['view','add','edit','delete'];
 

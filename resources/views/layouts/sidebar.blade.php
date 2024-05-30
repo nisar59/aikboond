@@ -65,6 +65,14 @@ $pref=Request()->route()->getPrefix();
             @endcan
 
             
+            @can('requests.view')
+            <li class="menu-header">Blood Requests</li>
+            <li class="dropdown @if($pref=='/requests') active @endif">
+              <a href="{{url('/requests')}}" class="nav-link"><i class="fas fa-prescription-bottle"></i><span>Blood Requests</span></a>
+            </li>
+            @endcan
+
+
             @can('compensation.view')
             <li class="menu-header">Compensation</li>
             <li class="dropdown @if($pref=='/compensation') active @endif">

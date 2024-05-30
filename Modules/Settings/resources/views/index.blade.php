@@ -37,14 +37,20 @@ Settings
                   </div>
                   <div class="card-body">
                     <div class="row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                       <label>Panel Name</label>
                       <input type="text" class="form-control" name="panel_name" value="{{$sett->portal_name}}" placeholder="Panel Name">
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                       <label>Panel Email</label>
                       <input type="email" class="form-control" name="panel_email" value="{{$sett->portal_email}}" placeholder="Panel Email">
                     </div>
+
+                    <div class="form-group col-md-4">
+                      <label>Panel Contact No</label>
+                      <input type="text" class="form-control" name="panel_contact_no" value="{{$sett->portal_contact_no}}" placeholder="Panel Contact No">
+                    </div>
+
                   </div>
                   <div class="row">
                     <div class="form-group col-md-10">

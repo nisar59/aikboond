@@ -6,5 +6,6 @@
     "Areas": true,
     "AddressesAndTowns": true,
     "Donors": true,
-    "Compensation": true
+    "Compensation": true,
+    "Requests": true
 }

@@ -65,6 +65,7 @@ class SettingsController extends Controller
         $settings=Settings::firstOrNew(['id'=>1]);
         $settings->portal_name=$req->panel_name;
         $settings->portal_email=$req->panel_email;
+        $settings->portal_contact_no=$req->panel_contact_no;
         $settings->portal_logo=$portal_logo;
         $settings->portal_favicon=$portal_favicon;
         $settings->footer_logo=$footer_logo;

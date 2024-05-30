@@ -58,7 +58,7 @@ Blood Donor
                   </select>
                 </div>
                 <div class="form-group col-md-6">
-                  <label>Last Donate Date</label>
+                  <label>Last Donated Date</label>
                   <input type="date" value="{{old('last_donate_date')}}" class="form-control" name="last_donate_date" placeholder="Enter Last Donate Date">
                 </div>
                 <input type="text" hidden name="country_id" value="167">
