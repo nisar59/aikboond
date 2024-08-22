@@ -1,6 +1,6 @@
 @extends('layouts.template')
 @section('title')
-Union councils 
+Union councils
 @endsection
 @section('content')
 <section class="section">
@@ -24,7 +24,7 @@ Union councils
                     <label for="">State</label>
                     <select class="form-control filters" name="state_id">
                       <option value="">-- Select State --</option>
-                       @foreach($states as $state)
+                      @foreach($states as $state)
                       <option value="{{$state->id}}">{{$state->name}}</option>
                       @endforeach
                     </select>
@@ -33,7 +33,7 @@ Union councils
                     <label for="">City</label>
                     <select class="form-control filters" name="city_id">
                       <option value="">-- Select City --</option>
-                        @foreach($cities as $city)
+                      @foreach($cities as $city)
                       <option value="{{$city->id}}">{{$city->name}}</option>
                       @endforeach
                     </select>
@@ -49,32 +49,36 @@ Union councils
         <div class="card">
           <div class="card-header">
             <h4 class="col-md-6">Union councils</h4>
-            <div class="col-md-6 text-right">
+            <div class="col-md-5 text-right">
               <a href="{{url('/union-councils/create')}}" class="btn btn-success">+</a>
-              <a href="{{url('/union-councils/import')}}"><i class="fa fa-cloud"style="font-size:20px"></i></a>
+            </div>
+            <div class="col-md-1 text-right">
+              <div class="col-md-3 text-right">
+                <a class="btn btn-primary" href="{{url('/union-councils/import')}}"><i class="fas fa-cloud-upload-alt"></i></a>
+              </div>            
             </div>
             </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-sm table-bordered table-striped table-hover table-sm" id="union-councils" style="width:100%;">
-                <thead>
-                  <tr>
-                    <th>State</th>
-                    <th>City Name</th>
-                    <th>Name</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                </tbody>
-              </table>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-sm table-bordered table-striped table-hover table-sm" id="union-councils" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th>State</th>
+                      <th>City Name</th>
+                      <th>Name</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 @endsection
 @section('js')
 <script type="text/javascript">
