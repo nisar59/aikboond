@@ -91,7 +91,7 @@ Union councils
         $('#area-dropdown').html('<option value="">-- Select Area --</option>');
     });
     /*-----------------area listing-----------*/
-    $(document).on('change','#city-dropdown', function() {
+  /*  $(document).on('change','#city-dropdown', function() {
         var city_id = this.value;
         $("#area-dropdown").html('');
         $.ajax({
@@ -121,9 +121,9 @@ Union councils
             }
         });
         $('#address-dropdown').html('<option value="">-- Select Area --</option>');
-    });
+    });*/
     /*Address*/
-    $(document).on('change','#area-dropdown', function() {
+/*    $(document).on('change','#area-dropdown', function() {
         var area_id = this.value;
         $("#address-dropdown").html('');
         $.ajax({
@@ -150,7 +150,7 @@ Union councils
             }
         });
     });
-
+*/
 
 
 

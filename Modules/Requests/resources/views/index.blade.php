@@ -51,21 +51,13 @@ Your Requests
                       </select>
                   </div>
 
-                  <div class="col-md-3 form-group">
-                    <label for="">Area</label>
-                    <select id="area-dropdown" class="form-control filters" name="area_id">
-                      <option value="">-- Select Area --</option>
+                  <div class="col-md-6 form-group">
+                    <label for="">Council Name</label>
+                    <select id="union-dropdown" class="form-control filters" name="area_id">
+                      <option value="">-- Select Council Name --</option>
                     </select>
                   </div>
-
-                  <div class="col-md-3 form-group">
-                    <label for="">Address or Town</label>
-                    <select id="address-dropdown" class="form-control filters" name="town_id">
-                      <option value="">-- Select Address --</option>
-                    </select>                  
-                  </div>
-
-                  <div class="col-md-3 form-group">
+                  <div class="col-md-6 form-group">
                     <label for="">Blood Group</label>
                     <select class="form-control filters" name="blood_group">
                       <option value="">-- Select Blood Group --</option>
@@ -104,8 +96,7 @@ Your Requests
                     <th>Blood Group</th>                    
                     <th>State Name</th>
                     <th>City Name</th>
-                    <th>Area</th>
-                    <th>Town Address</th>
+                    <th>Union Council Name</th>
                     <th>Status</th>
                   </tr>
                 </thead>
@@ -145,8 +136,7 @@ $(document).ready( function(){
                 {data: 'blood_group', name: 'blood_group'},
                 {data: 'state_id', name: 'state_id'},
                 {data: 'city_id', name: 'city_id'},
-                {data: 'area_id', name: 'area_id'},
-                {data: 'town_id', name: 'town_id'},
+                {data: 'ucouncil_id', name: 'ucouncil_id'},
                 {data: 'status', name: 'status'},
             ]
   });
@@ -235,69 +225,42 @@ DataTableInit(data);
                 error(err.statusText);
             }
         });
-        $('#area-dropdown').html('<option value="">-- Select Area --</option>');
+        $('#union-dropdown').html('<option value="">-- Select Area --</option>');
     });
     /*-----------------area listing-----------*/
+ 
+  
+    /*-----------------area listing-----------*/
     $(document).on('change','#city-dropdown', function() {
-        var city_id = this.value;
-        $("#area-dropdown").html('');
-        $.ajax({
-            url: "{{url('areas')}}",
-            type: "POST",
-            data: {
-                city_id: city_id,
-                _token: '{{csrf_token()}}'
-            },
-            dataType: 'json',
-            success: function(result) {
-                $('#area-dropdown').html('<option value="">Select Area</option>');
-                $.each(result.areas, function(key, value) {
-                    var selected='';
-                    if(value.id=="{{old('area_id')}}"){
-                        selected='selected';
-                    }
-                    $("#area-dropdown").append('<option '+selected+' value="' + value.id + '">' + value.name + '</option>');
-                });
-
-                setTimeout(function () {
-                    $("#area-dropdown").trigger('change');
-                },500)
-            },
-            error: function(err) {
-                error(err.statusText);
-            }
-        });
-        $('#address-dropdown').html('<option value="">-- Select Area --</option>');
+    var city_id = this.value;
+    $("#union-dropdown").html('');
+    $.ajax({
+    url: "{{url('union-council')}}",
+    type: "POST",
+    data: {
+    city_id: city_id,
+    _token: '{{csrf_token()}}'
+    },
+    dataType: 'json',
+    success: function(result) {
+    $('#union-dropdown').html('<option value="">Select Council Name</option>');
+    $.each(result.unioncouncil, function(key, value) {
+    var selected='';
+    if(value.id=="{{old('city_id')}}"){
+    selected='selected';
+    }
+    $("#union-dropdown").append('<option '+selected+' value="' + value.id + '">' + value.name + '</option>');
     });
-    /*Address*/
-    $(document).on('change','#area-dropdown', function() {
-        var area_id = this.value;
-        $("#address-dropdown").html('');
-        $.ajax({
-            url: "{{url('address')}}",
-            type: "POST",
-            data: {
-                area_id: area_id,
-                _token: '{{csrf_token()}}'
-            },
-            dataType: 'json',
-            success: function(result) {
-                $('#address-dropdown').html('<option value="">Select Address</option>');
-
-                $.each(result.address, function(key, value) {                
-                    var selected='';
-                    if(value.id=="{{old('town_id')}}"){
-                        selected='selected';
-                    }
-                    $("#address-dropdown").append('<option '+selected+' value="' + value.id + '">' + value.name + '</option>');
-                });
-            },
-            error: function(err) {
-                error(err.statusText);
-            }
-        });
+    setTimeout(function () {
+    $("#union-dropdown").trigger('change');
+    },500)
+    },
+    error: function(err) {
+    error(err.statusText);
+    }
     });
-
+   
+    });
 
 
 

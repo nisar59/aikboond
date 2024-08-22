@@ -64,18 +64,11 @@ class RequestsController extends Controller
                     return $row->city->name;
                 }
             })
+             ->editColumn('ucouncil_id',function ($row)
+                {
+                   return UnionCouncil($row->ucouncil_id);
+                })
 
-            ->editColumn('area_id', function ($row) {
-                if($row->area()->exists()){
-                    return $row->area->name;
-                }
-            })
-
-            ->editColumn('town_id', function ($row) {
-                if($row->town()->exists()){
-                    return $row->town->name;
-                }
-            })
             ->editColumn('created_at', function ($row) {
                 return Carbon::parse($row->created_at)->format('d-m-Y');
             })

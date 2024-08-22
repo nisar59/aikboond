@@ -60,18 +60,9 @@ class CompensationController extends Controller
                     }
                 })
 
-                ->addColumn('area_id', function ($row) {
-
-                    if($row->user()->exists() && $row->user->area()->exists()){
-                        return $row->user->area->name;
-                    }
-                })
-
-                ->addColumn('town_id', function ($row) {
-
-                    if($row->user()->exists() && $row->user->town()->exists()){
-                        return $row->user->town->name;
-                    }
+                  ->editColumn('ucouncil_id',function ($row)
+                {
+                   return UnionCouncil($row->ucouncil_id);
                 })
                 ->addColumn('compensation', function ($row) {
                     return 'Rs. '.$row->total_amount;
