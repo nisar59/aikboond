@@ -5,10 +5,8 @@ namespace Modules\Requests\App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Requests\Database\factories\RequestsFactory;
-use Modules\AddressesAndTowns\Entities\AddressesAndTowns;
-use Modules\Cities\Entities\Cities;
-use Modules\Areas\Entities\Areas;
-use App\Models\States;
+ use Modules\Cities\Entities\Cities;
+ use App\Models\States;
 use Modules\Donors\Entities\Donor;
 class Requests extends Model
 {
@@ -33,13 +31,5 @@ class Requests extends Model
        return $this->hasOne(Cities::class, 'id', 'city_id');
     }
 
-    public function area()
-    {
-       return $this->hasOne(Areas::class, 'id', 'area_id');
-    }
-
-    public function town()
-    {
-       return $this->hasOne(AddressesAndTowns::class, 'id', 'town_id');
-    }
+    
 }

@@ -7,9 +7,9 @@ use App\Models\Countries;
 use App\Models\States;
 use Modules\Cities\Entities\Cities;
 use Modules\Areas\Entities\Areas;
-use Modules\AddressesAndTowns\Entities\AddressesAndTowns;
 use App\Models\VerificationMsgs;
 use Modules\Donors\Entities\Donor;
+use Modules\UnionCouncils\App\Models\UnionCouncils;
 use Throwable;
 use Artisan;
 use Auth;
@@ -106,9 +106,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function fetchAreas(Request $req) {
+    public function fetchUnionCouncils(Request $req) {
         try{
-        $data['areas'] =Areas::where("city_id", $req->city_id)->get(["name", "id"]);                          
+        $data['unioncouncil'] =UnionCouncils::where("city_id", $req->city_id)->get(["name", "id"]);                          
         return response()->json($data);
     }
          catch(Exception $ex){
@@ -125,19 +125,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function fetchAdress(Request $req){
-        try{
-        $data['address'] =AddressesAndTowns::where("area_id", $req->area_id)->get(["name", "id"]);                          
-        return response()->json($data);
-    }
-         catch(Exception $ex){
-            $res=['success'=>false, 'error'=>'Something went wrong with this error: '.$ex->getMessage(), 'data'=>null];
-             return response()->json($res);
-        }catch(Throwable $ex){
-            $res=['success'=>false, 'error'=>'Something went wrong with this error: '.$ex->getMessage(), 'data'=>null];
-             return response()->json($res);
-        }
-}
+    
 
 
 

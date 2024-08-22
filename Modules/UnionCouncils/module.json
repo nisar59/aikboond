@@ -1,0 +1,11 @@
+{
+    "name": "UnionCouncils",
+    "alias": "unioncouncils",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\UnionCouncils\\App\\Providers\\UnionCouncilsServiceProvider"
+    ],
+    "files": []
+}

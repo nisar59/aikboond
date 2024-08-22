@@ -25,8 +25,7 @@ Users
                             <th>Role</th>
                             <th>State</th>
                             <th>City</th>                            
-                            <th>Area</th>
-                            <th>Town & Address</th>
+                            <th>Union Council Name</th>
                             <th>Action</th>
                           </tr>
                         </thead>
@@ -57,8 +56,7 @@ Users
                 {data: 'role', name: 'role'},
                 {data: 'state_id', name: 'state_id'},
                 {data: 'city_id', name: 'city_id'},
-                {data: 'area_id', name: 'area_id'},
-                {data: 'town_id', name: 'town_id'},
+                {data: 'ucouncil_id', name: 'ucouncil_id'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
           });

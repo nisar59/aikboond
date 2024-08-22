@@ -3,9 +3,8 @@
     "Users": true,
     "Roles": true,
     "Cities": true,
-    "Areas": true,
-    "AddressesAndTowns": true,
     "Donors": true,
     "Compensation": true,
-    "Requests": true
+    "Requests": true,
+    "UnionCouncils": true
 }

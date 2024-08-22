@@ -26,8 +26,7 @@ Route::group(['middleware'=>'auth'], function(){
     Route::get('/home', 'HomeController@index')->name('home');
     Route::post('states','HomeController@fetchStates');
     Route::post('cities','HomeController@fetchCity');
-    Route::post('areas','HomeController@fetchAreas');
-    Route::post('address','HomeController@fetchAdress');
+    Route::post('union-council','HomeController@fetchUnionCouncils');
     Route::POST('send-code', 'HomeController@verificationCode');
 
 });

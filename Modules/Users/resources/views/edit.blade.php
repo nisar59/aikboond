@@ -91,30 +91,21 @@ Users
                     </select>
                   </div>
                 </div>
-                <div class="col-md-6">
+                 <div class="col-md-6">
                   <div class="form-group">
-                    <label for="">Area Name</label>
-                    <select id="area-dropdown" class="form-control select2" name="area_id">
-                      <option value="">-- Select Area --</option>
+                    <label for="">Union Councils Name</label>
+                    <select id="union-dropdown" class="form-control select2" name="ucouncil_id">
+                      <option value="">-- Select Council Name --</option>
                     </select>
                   </div>
                 </div>
-                <div class="form-group col-md-6">
-                  <label>Towns & Addresses</label>
-                  <select id="address-dropdown" class="form-control select2" name="town_id">
-                    <option value="">-- Select Address --</option>
-                  </select>
-                </div>
 
-                <div class="form-group col-md-12">
+                <div class="form-group col-md-6">
                   <label>Address</label>
                   <input type="text" value="{{old('address', $data['user']->address)}}" class="form-control" name="address" placeholder="Enter Address">
                 </div>
 
                   </div>
-
-
-
 
                 </div>
                   <div class="card-footer text-right">
@@ -190,14 +181,14 @@ Users
                 error(err.statusText);
             }
         });
-        $('#area-dropdown').html('<option value="">-- Select Area --</option>');
+        $('#union-dropdown').html('<option value="">-- Select Area --</option>');
     });
-    /*-----------------area listing-----------*/
-    $(document).on('change','#city-dropdown', function() {
+
+     $(document).on('change','#city-dropdown', function() {
         var city_id = this.value;
-        $("#area-dropdown").html('');
+        $("#union-dropdown").html('');
         $.ajax({
-            url: "{{url('areas')}}",
+            url: "{{url('union-council')}}",
             type: "POST",
             data: {
                 city_id: city_id,
@@ -205,54 +196,24 @@ Users
             },
             dataType: 'json',
             success: function(result) {
-                $('#area-dropdown').html('<option value="">Select Area</option>');
-                $.each(result.areas, function(key, value) {
+                $('#union-dropdown').html('<option value=""> Select Council Name</option>');
+                $.each(result.unioncouncil, function(key, value) {
                     var selected='';
-                    if(value.id=="{{old('area_id',$data['user']->area_id)}}"){
+                    if(value.id=="{{old('ucouncil_id',$data['user']->ucouncil_id)}}"){
                         selected='selected';
                     }
-                    $("#area-dropdown").append('<option '+selected+' value="' + value.id + '">' + value.name + '</option>');
+                    $("#union-dropdown").append('<option '+selected+' value="' + value.id + '">' + value.name + '</option>');
                 });
 
                 setTimeout(function () {
-                    $("#area-dropdown").trigger('change');
+                    $("#union-dropdown").trigger('change');
                 },500)
             },
             error: function(err) {
                 error(err.statusText);
             }
         });
-        $('#address-dropdown').html('<option value="">-- Select Area --</option>');
-    });
-    /*Address*/
-    $(document).on('change','#area-dropdown', function() {
-        var area_id = this.value;
-        $("#address-dropdown").html('');
-        $.ajax({
-            url: "{{url('address')}}",
-            type: "POST",
-            data: {
-                area_id: area_id,
-                _token: '{{csrf_token()}}'
-            },
-            dataType: 'json',
-            success: function(result) {
-                $('#address-dropdown').html('<option value="">Select Address</option>');
-
-                $.each(result.address, function(key, value) {                
-                    var selected='';
-                    if(value.id=="{{old('town_id', $data['user']->town_id)}}"){
-                        selected='selected';
-                    }
-                    $("#address-dropdown").append('<option '+selected+' value="' + value.id + '">' + value.name + '</option>');
-                });
-            },
-            error: function(err) {
-                error(err.statusText);
-            }
-        });
-    });
-
+     });
 
   });
   </script>

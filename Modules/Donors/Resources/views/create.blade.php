@@ -16,44 +16,38 @@ Blood Donor
             </div>
             <div class="card-body pt-1">
               <div class="row">
-
-				<div class="col-12 text-center">
+                <div class="col-12 text-center">
                   <input type="file" name="image" hidden onchange="document.getElementById('image-preview').src = window.URL.createObjectURL(this.files[0])" id="image-input">
-                 <label for="image-input"> <img width="120px" height="120px" id="image-preview" class="rounded-circle" src="{{asset('img/images.png')}}" alt="">
-                 </label>
+                  <label for="image-input"> <img width="120px" height="120px" id="image-preview" class="rounded-circle" src="{{asset('img/images.png')}}" alt="">
+                  </label>
                 </div>
-
                 <div class="form-group col-md-6">
                   <label>Name</label>
                   <input type="text" value="{{old('name')}}" class="form-control" name="name" placeholder="Enter Name">
                 </div>
-
                 <div class="form-group col-md-6">
                   <label>DOB</label>
                   <input type="date" value="{{old('dob')}}" name="dob" class="form-control" placeholder="Enter dob">
                 </div>
-
                 <div class="form-group col-md-6">
                   <label>Phone No</label>
                   <input type="number" id="phone" value="{{old('phone')}}" class="form-control" name="phone"  placeholder="Enter Phone No">
                 </div>
-
                 <div class="col-md-6">
-                    <label>Verification Code</label>
-                    <div class="input-group mb-2 mr-sm-2">
-                      <input type="text" class="form-control" value="{{old('verification_code')}}" name="verification_code" placeholder="Verification Code">
-                      <div class="input-group-append">
-                        <a href="javascript:void(0)" id="get-code" class="btn btn-primary input-group-text">Get Code</a>
-                      </div>
-                    </div> 
+                  <label>Verification Code</label>
+                  <div class="input-group mb-2 mr-sm-2">
+                    <input type="text" class="form-control" value="{{old('verification_code')}}" name="verification_code" placeholder="Verification Code">
+                    <div class="input-group-append">
+                      <a href="javascript:void(0)" id="get-code" class="btn btn-primary input-group-text">Get Code</a>
+                    </div>
+                  </div>
                 </div>
-
                 <div class="form-group col-md-6">
                   <label>Blood Group</label>
                   <select name="blood_group" class="form-control">
                     <option value="">-- Select Blood Group --</option>
                     @foreach(BloodGroups() as $key=> $bg)
-                      <option @if(old('blood_group')==$key) selected @endif value="{{$key}}">{{$bg}}</option>
+                    <option @if(old('blood_group')==$key) selected @endif value="{{$key}}">{{$bg}}</option>
                     @endforeach
                   </select>
                 </div>
@@ -81,25 +75,16 @@ Blood Donor
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label for="">Area Name</label>
-                    <select id="area-dropdown" class="form-control select2" name="area_id">
-                      <option value="">-- Select Area --</option>
+                    <label for="">Union Councils Name</label>
+                    <select id="union-dropdown" class="form-control select2" name="ucouncil_id">
+                      <option value="">-- Select Council Name --</option>
                     </select>
                   </div>
                 </div>
                 <div class="form-group col-md-6">
-                  <label>Towns & Addresses</label>
-                  <select id="address-dropdown" class="form-control select2" name="town_id">
-                    <option value="">-- Select Address --</option>
-                  </select>
-                </div>
-
-                <div class="form-group col-md-12">
                   <label>Address</label>
                   <input type="text" value="{{old('address')}}" class="form-control" name="address" placeholder="Enter Address">
                 </div>
-
-
               </div>
               <div class="card-footer text-right">
                 <button class="btn btn-primary mr-1" type="submit">Submit</button>
@@ -114,192 +99,157 @@ Blood Donor
   @section('js')
   <script type="text/javascript">
   $(document).ready(function() {
-    setTimeout(function() {
-        $("#state-dropdown").trigger('change');
-    }, 500);
-    // $(document).on('change','#country-dropdown', function() {
-    //     var idCountry = this.value;
-    //     $("#state-dropdown").html('');
-    //     $.ajax({
-    //         url: "{{url('states')}}",
-    //         type: "POST",
-    //         data: {
-    //             country_id: idCountry,
-    //             _token: '{{csrf_token()}}'
-    //         },
-    //         dataType: 'json',
-    //         success: function(result) {
-    //             console.log(result);
-    //             $('#state-dropdown').html('<option value="">-- Select State --</option>');
-    //             $.each(result.states, function(key, value) {
-    //                 var selected=("{{old('state_id')}}"==value.id) ? 'selected' : '';
+  setTimeout(function() {
+  $("#state-dropdown").trigger('change');
+  }, 500);
+  // $(document).on('change','#country-dropdown', function() {
+  //     var idCountry = this.value;
+  //     $("#state-dropdown").html('');
+  //     $.ajax({
+  //         url: "{{url('states')}}",
+  //         type: "POST",
+  //         data: {
+  //             country_id: idCountry,
+  //             _token: '{{csrf_token()}}'
+  //         },
+  //         dataType: 'json',
+  //         success: function(result) {
+  //             console.log(result);
+  //             $('#state-dropdown').html('<option value="">-- Select State --</option>');
+  //             $.each(result.states, function(key, value) {
+  //                 var selected=("{{old('state_id')}}"==value.id) ? 'selected' : '';
+  //                 $("#state-dropdown").append('<option '+selected+' value="' + value
+  //                     .id + '">' + value.name + '</option>');
+  //             });
+  //             $('#city-dropdown').html('<option value="">-- Select City --</option>');
+  //         },
+  //         error: function(err) {
+  //             error(err.statusText);
+  //         }
+  //     });
+  // });
+  /*------------------city listing----------------*/
+  $(document).on('change','#state-dropdown', function() {
+  var idState = this.value;
+  $("#city-dropdown").html('');
+  $.ajax({
+  url: "{{url('cities')}}",
+  type: "POST",
+  data: {
+  state_id: idState,
+  _token: '{{csrf_token()}}'
+  },
+  dataType: 'json',
+  success: function(res) {
+  $('#city-dropdown').html('<option value="">-- Select City --</option>');
+  $.each(res.cities, function(key, value) {
+  var selected='';
+  if(value.id=="{{old('city_id')}}"){
+  selected='selected';
+  }
+  $("#city-dropdown").append('<option '+selected+' value="' + value
+  .id + '">' + value.name + '</option>');
+  });
+  setTimeout(function () {
+  $("#city-dropdown").trigger('change');
+  }, 500)
+  },
+  error: function(err) {
+  error(err.statusText);
+  }
+  });
 
-    //                 $("#state-dropdown").append('<option '+selected+' value="' + value
-    //                     .id + '">' + value.name + '</option>');
-    //             });
-    //             $('#city-dropdown').html('<option value="">-- Select City --</option>');
-    //         },
-    //         error: function(err) {
-    //             error(err.statusText);
-    //         }
-    //     });
-    // });
-    /*------------------city listing----------------*/
-    $(document).on('change','#state-dropdown', function() {
-        var idState = this.value;
-        $("#city-dropdown").html('');
-        $.ajax({
-            url: "{{url('cities')}}",
-            type: "POST",
-            data: {
-                state_id: idState,
-                _token: '{{csrf_token()}}'
-            },
-            dataType: 'json',
-            success: function(res) {
-                $('#city-dropdown').html('<option value="">-- Select City --</option>');
-                $.each(res.cities, function(key, value) {
-                    var selected='';
-                    if(value.id=="{{old('city_id')}}"){
-                        selected='selected';
-                    }
-                    $("#city-dropdown").append('<option '+selected+' value="' + value
-                        .id + '">' + value.name + '</option>');
-                });
-                setTimeout(function () {
-                 $("#city-dropdown").trigger('change');
-                }, 500)
-            },
-            error: function(err) {
-                error(err.statusText);
-            }
-        });
-        $('#area-dropdown').html('<option value="">-- Select Area --</option>');
+
+    $('#union-dropdown').html('<option value="">-- Select Council Name --</option>');
     });
     /*-----------------area listing-----------*/
     $(document).on('change','#city-dropdown', function() {
-        var city_id = this.value;
-        $("#area-dropdown").html('');
-        $.ajax({
-            url: "{{url('areas')}}",
-            type: "POST",
-            data: {
-                city_id: city_id,
-                _token: '{{csrf_token()}}'
-            },
-            dataType: 'json',
-            success: function(result) {
-                $('#area-dropdown').html('<option value="">Select Area</option>');
-                $.each(result.areas, function(key, value) {
-                    var selected='';
-                    if(value.id=="{{old('area_id')}}"){
-                        selected='selected';
-                    }
-                    $("#area-dropdown").append('<option '+selected+' value="' + value.id + '">' + value.name + '</option>');
-                });
-
-                setTimeout(function () {
-                    $("#area-dropdown").trigger('change');
-                },500)
-            },
-            error: function(err) {
-                error(err.statusText);
-            }
-        });
-        $('#address-dropdown').html('<option value="">-- Select Area --</option>');
-    });
-    /*Address*/
-    $(document).on('change','#area-dropdown', function() {
-        var area_id = this.value;
-        $("#address-dropdown").html('');
-        $.ajax({
-            url: "{{url('address')}}",
-            type: "POST",
-            data: {
-                area_id: area_id,
-                _token: '{{csrf_token()}}'
-            },
-            dataType: 'json',
-            success: function(result) {
-                $('#address-dropdown').html('<option value="">Select Address</option>');
-
-                $.each(result.address, function(key, value) {                
-                    var selected='';
-                    if(value.id=="{{old('town_id')}}"){
-                        selected='selected';
-                    }
-                    $("#address-dropdown").append('<option '+selected+' value="' + value.id + '">' + value.name + '</option>');
-                });
-            },
-            error: function(err) {
-                error(err.statusText);
-            }
-        });
-    });
-
-
-
-
-    $(document).on('click', '#get-code', function() {
-        var phone = $("#phone").val();
-        var domObj=$(this);
-        domObj.html(`<div class="spinner-border" role="status">
-                      <span class="sr-only">Loading...</span>
-                    </div>`);
-        domObj.prop('disabled', true);
-
-        $.ajax({
-            url: "{{url('send-code')}}",
-            type: "POST",
-            data: {
-                phone: phone,
-                _token: '{{csrf_token()}}'
-            },
-            dataType: 'json',
-            success: function(result) {
-                if(result.success){
-                    success(result.message)
-                    countdown(1, 00);
-                }else{
-                    error(result.message);
-                    domObj.html('Get Code');
-                    domObj.prop('disabled', false);
-
-                }
-            },
-            error: function(err) {
-                error(err.statusText);
-            }
-        });
-    });
-
-
-
-var timeoutHandle;
-function countdown(minutes, seconds) {
-    function tick() {
-        var counter = document.getElementById("get-code");
-        counter.innerHTML =
-            minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
-        seconds--;
-        if (seconds >= 0) {
-            timeoutHandle = setTimeout(tick, 1000);
-        } else {
-            if (minutes >= 1) {
-                // countdown(mins-1);   never reach “00″ issue solved:Contributed by Victor Streithorst
-                setTimeout(function () {
-                    countdown(minutes - 1, 59);
-                }, 1000);
-            }else{
-              counter.innerHTML='Get Code';
-              $("#get-code").prop('disabled', false);  
-            }
-        }
+    var city_id = this.value;
+    $("#union-dropdown").html('');
+    $.ajax({
+    url: "{{url('union-council')}}",
+    type: "POST",
+    data: {
+    city_id: city_id,
+    _token: '{{csrf_token()}}'
+    },
+    dataType: 'json',
+    success: function(result) {
+    $('#union-dropdown').html('<option value="">Select Council Name</option>');
+    $.each(result.unioncouncil, function(key, value) {
+    var selected='';
+    if(value.id=="{{old('city_id')}}"){
+    selected='selected';
     }
-    tick();
-}
+    $("#union-dropdown").append('<option '+selected+' value="' + value.id + '">' + value.name + '</option>');
+    });
+    setTimeout(function () {
+    $("#union-dropdown").trigger('change');
+    },500)
+    },
+    error: function(err) {
+    error(err.statusText);
+    }
+    });
+   
+    });
+  
+    
 
 
+  $(document).on('click', '#get-code', function() {
+  var phone = $("#phone").val();
+  var domObj=$(this);
+  domObj.html(`<div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>`);
+  domObj.prop('disabled', true);
+  $.ajax({
+  url: "{{url('send-code')}}",
+  type: "POST",
+  data: {
+  phone: phone,
+  _token: '{{csrf_token()}}'
+  },
+  dataType: 'json',
+  success: function(result) {
+  if(result.success){
+  success(result.message)
+  countdown(1, 00);
+  }else{
+  error(result.message);
+  domObj.html('Get Code');
+  domObj.prop('disabled', false);
+  }
+  },
+  error: function(err) {
+  error(err.statusText);
+  }
+  });
+  });
+  var timeoutHandle;
+  function countdown(minutes, seconds) {
+  function tick() {
+  var counter = document.getElementById("get-code");
+  counter.innerHTML =
+  minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
+  seconds--;
+  if (seconds >= 0) {
+  timeoutHandle = setTimeout(tick, 1000);
+  } else {
+  if (minutes >= 1) {
+  // countdown(mins-1);   never reach “00″ issue solved:Contributed by Victor Streithorst
+  setTimeout(function () {
+  countdown(minutes - 1, 59);
+  }, 1000);
+  }else{
+  counter.innerHTML='Get Code';
+  $("#get-code").prop('disabled', false);
+  }
+  }
+  }
+  tick();
+  }
   });
   </script>
   @endsection

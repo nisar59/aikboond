@@ -3,8 +3,7 @@ use Modules\Settings\Entities\Settings;
 use App\Models\Countries;
 use App\Models\States;
 use Modules\Cities\Entities\Cities;
-use Modules\Areas\Entities\Areas;
-use Modules\AddressesAndTowns\Entities\AddressesAndTowns;
+use Modules\UnionCouncils\App\Models\UnionCouncils;
 
 function AllPermissions()
 {
@@ -14,9 +13,8 @@ function AllPermissions()
 	$role['country']=['view','add','edit','delete'];
 	$role['states']=['view','add','edit','delete'];
 	$role['cities']=['view','add','edit','delete'];
-	$role['areas']=['view','add','edit','delete'];
-	$role['addresses-and-towns']=['view','add','edit','delete'];
-	$role['donors']=['view','add','edit','delete', 'view-all', 'view-by-town', 'view-by-area', 'view-by-city', 'view-by-state'];
+ 	$role['union-councils']=['view','add','edit','delete'];
+ 	$role['donors']=['view','add','edit','delete', 'view-all', 'view-by-town', 'view-by-area', 'view-by-city', 'view-by-state'];
 	$role['requests']=['view','edit','delete'];
 	$role['compensation']=['view','add','edit','delete'];
 	$role['settings']=['view','add','edit','delete'];
@@ -68,20 +66,18 @@ function City($id)
 		return $cities->name;
 	}
 }
-function Area($id)
+
+
+
+function UnionCouncil($id)
 {
-	$address=Areas::find($id);
-	if ($address!=null) {
-		return $address->name;
+	$uniCoucil=UnionCouncils::find($id);
+	if ($uniCoucil!=null) {
+		return $uniCoucil->name;
 	}
 }
-function Address($id)
-{
-	$area=AddressesAndTowns::find($id);
-	if ($area!=null) {
-		return $area->name;
-	}
-}
+
+
 
 function State($id)
 {

@@ -107,18 +107,11 @@ class DonorsController extends Controller
                     return $row->city->name;
                 }
             })
-
-            ->editColumn('area_id', function ($row) {
-                if($row->area()->exists()){
-                    return $row->area->name;
-                }
+            ->editColumn('ucouncil_id',function ($row)
+            {
+               return UnionCouncil($row->ucouncil_id);
             })
 
-            ->editColumn('town_id', function ($row) {
-                if($row->town()->exists()){
-                    return $row->town->name;
-                }
-            })
            ->editColumn('last_donate_date',function($row)
              {
                  return Carbon::parse($row->last_donate_date)->format('d-m-Y');
@@ -128,8 +121,7 @@ class DonorsController extends Controller
         }
          $states=States::where('country_id',167)->get();
          $cities=Cities::where('country_id',167)->get();
-         $areas=Areas::where('country_id',167)->get();
-        return view('donors::index',compact('states','cities','areas'));
+        return view('donors::index',compact('states','cities'));
     }
 
     /**
@@ -160,8 +152,7 @@ class DonorsController extends Controller
             'country_id'=>'required',
             'state_id'=>'required',
             'city_id'=>'required',
-            'area_id'=>'required',
-            'town_id'=>'required',
+            'ucouncil_id'=>'required',
             'address'=>'required',
         ]);
             DB::beginTransaction();
@@ -249,8 +240,7 @@ class DonorsController extends Controller
             'country_id'=>'required',
             'state_id'=>'required',
             'city_id'=>'required',
-            'area_id'=>'required',
-            'town_id'=>'required',
+            'ucouncil_id'=>'required',
             'address'=>'required',
         ]);
             DB::beginTransaction();

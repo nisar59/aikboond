@@ -77,17 +77,9 @@ class UsersController extends Controller
                         return $row->city->name;
                     }
                 })
-
-                ->editColumn('area_id', function ($row) {
-                    if($row->area()->exists()){
-                        return $row->area->name;
-                    }
-                })
-
-                ->editColumn('town_id', function ($row) {
-                    if($row->town()->exists()){
-                        return $row->town->name;
-                    }
+                ->editColumn('ucouncil_id',function ($row)
+                {
+                   return UnionCouncil($row->ucouncil_id);
                 })
 
                 ->removeColumn('id')
@@ -127,8 +119,7 @@ class UsersController extends Controller
             'country_id'=>['required'],
             'state_id'=>['required'],
             'city_id'=>['required'],
-            'area_id'=>['required'],
-            'town_id'=>['required'],
+            'ucouncil_id'=>['required'],
             'address'=>['required'],
 
         ]);
@@ -144,8 +135,7 @@ class UsersController extends Controller
             'country_id'=>$req->country_id,
             'state_id'=>$req->state_id,
             'city_id'=>$req->city_id,
-            'area_id'=>$req->area_id,
-            'town_id'=>$req->town_id,
+            'ucouncil_id'=>$req->ucouncil_id,
             'address'=>$req->address,
 
         ]);
@@ -193,8 +183,7 @@ class UsersController extends Controller
             'country_id'=>['required'],
             'state_id'=>['required'],
             'city_id'=>['required'],
-            'area_id'=>['required'],
-            'town_id'=>['required'],
+            'ucouncil_id'=>['required'],
             'address'=>['required'],
         ]);
 
@@ -207,8 +196,7 @@ class UsersController extends Controller
         $user->country_id=$req->country_id;
         $user->state_id=$req->state_id;
         $user->city_id=$req->city_id;
-        $user->area_id=$req->area_id;
-        $user->town_id=$req->town_id;
+        $user->ucouncil_id=$req->ucouncil_id;
         $user->address=$req->address;
 
         if($req->password!=null){
