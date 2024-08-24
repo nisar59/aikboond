@@ -39,15 +39,15 @@ Blood Donors
                     </select>
                   </div>
                   
-                  <div class="col-md-3 form-group">
+                  <div class="col-md-4 form-group">
                     <label for="">Address</label>
                     <input type="text" class="form-control filters" name="address" placeholder="Address">
                   </div>
-                  <div class="col-md-3 form-group">
+                  <div class="col-md-4 form-group">
                     <label for="">Phone No</label>
                     <input type="text" class="form-control filters" name="phone" placeholder="Phone No">
                   </div>
-                  <div class="col-md-3 form-group">
+                  <div class="col-md-4 form-group">
                     <label for="">Date</label>
                     <input type="date" class="form-control filters" name="last_donate_date" placeholder="Date Time">
                   </div>
