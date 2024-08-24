@@ -36,7 +36,7 @@ class UnionCouncilsController extends Controller
             $union_councils->where('city_id',$req->city_id);
             }
             if ($req->name != null) {
-            $union_councils->where('name',$req->name);
+            $union_councils->where('name','LIKE','%'.$req->name.'%');
             }
             $total=$union_councils->count();
 

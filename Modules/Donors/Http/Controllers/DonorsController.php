@@ -51,7 +51,7 @@ class DonorsController extends Controller
 
 
              if ($req->name != null) {
-            $donors->where('name', $req->name);
+            $donors->where('name','LIKE','%'.$req->name.'%');
             }
              if ($req->state_id != null) {
             $donors->where('state_id', $req->state_id);
@@ -63,7 +63,7 @@ class DonorsController extends Controller
             $donors->where('area_id', $req->area_id);
             }
             if ($req->address != null) {
-            $donors->where('address', $req->address);
+            $donors->where('address','LIKE','%'.$req->address.'%');
             } 
             if ($req->phone != null) {
             $donors->where('phone','LIKE','%'.$req->phone.'%');
