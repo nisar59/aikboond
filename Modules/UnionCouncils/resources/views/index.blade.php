@@ -20,24 +20,23 @@ Union councils
                     <label for="">Name</label>
                     <input type="text" class="form-control filters" name="name" placeholder="Name">
                   </div>
-                  <div class="col-md-4 form-group">
-                    <label for="">State</label>
-                    <select class="form-control filters" name="state_id">
-                      <option value="">-- Select State --</option>
-                      @foreach($states as $state)
-                      <option value="{{$state->id}}">{{$state->name}}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                  <div class="col-md-4 form-group">
+                   <div class="form-group col-md-4">
+                  <label for="">States</label>
+                  <select name="state_id" id="state-dropdown" class="form-control filters">
+                    <option value="">-- Select State --</option>
+                    @foreach($states as $state)
+                    <option @if(old('state_id')==$state->id) selected @endif value="{{$state->id}}">{{$state->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
                     <label for="">City</label>
-                    <select class="form-control filters" name="city_id">
+                    <select id="city-dropdown" class="form-control filters" name="city_id">
                       <option value="">-- Select City --</option>
-                      @foreach($cities as $city)
-                      <option value="{{$city->id}}">{{$city->name}}</option>
-                      @endforeach
                     </select>
                   </div>
+                </div>
                   
                 </div>
               </div>
@@ -114,5 +113,44 @@ DataTableInit(data);
 
 
 });
+</script>
+<script>
+    $(document).ready(function() {
+  setTimeout(function() {
+  $("#state-dropdown").trigger('change');
+  }, 500);
+   $(document).on('change','#state-dropdown', function() {
+  var idState = this.value;
+  $("#city-dropdown").html('');
+  $.ajax({
+  url: "{{url('cities')}}",
+  type: "POST",
+  data: {
+  state_id: idState,
+  _token: '{{csrf_token()}}'
+  },
+  dataType: 'json',
+  success: function(res) {
+  $('#city-dropdown').html('<option value="">-- Select City --</option>');
+  $.each(res.cities, function(key, value) {
+  var selected='';
+  if(value.id=="{{old('city_id')}}"){
+  selected='selected';
+  }
+  $("#city-dropdown").append('<option '+selected+' value="' + value
+  .id + '">' + value.name + '</option>');
+  });
+  setTimeout(function () {
+  $("#city-dropdown").trigger('change');
+  }, 500)
+  },
+  error: function(err) {
+  error(err.statusText);
+  }
+  });
+
+
+    });
+   });
 </script>
 @endsection
