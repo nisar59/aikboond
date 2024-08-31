@@ -44,12 +44,9 @@ class HomeController extends Controller
        }
        elseif(!$user->hasRole('super-admin') && $user->can('donors.view-by-city')){
             $donors->where('city_id', $user->city_id);
-       }
-        elseif(!$user->hasRole('super-admin') && $user->can('donors.view-by-area')){
-            $donors->where('area_id', $user->area_id);
        }            
        else{
-            $donors->where('town_id', $user->town_id);
+            $donors->where('ucouncil_id', $user->ucouncil_id);
        }
 
        $donors=$donors->count();
